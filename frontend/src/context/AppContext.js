@@ -5,6 +5,11 @@ const AppContext = createContext();
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "ADD_TO_BASKET":
+      return {
+        ...state,
+        basket: [...state.basket, action.payload],
+      };
     default:
       return state;
   }
@@ -12,7 +17,8 @@ const reducer = (state, action) => {
 
 export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, {
-    /*Tutaj initialState reducera*/
+    products: [],
+    basket: [],
   });
 
   const contextValue = {

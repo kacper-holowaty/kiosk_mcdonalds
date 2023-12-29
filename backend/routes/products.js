@@ -3,6 +3,7 @@ const productRoutes = express.Router();
 const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
 
+// productRoutes.route("/products");
 // recordRoutes.route("/products").get(async (req, res) => {
 //     try {
 //         let db_connect = dbo.getDb("magazyn");
@@ -179,4 +180,4 @@ const ObjectId = require("mongodb").ObjectId;
 //     }
 //   });
 
-// module.exports = recordRoutes;
+module.exports = productRoutes;

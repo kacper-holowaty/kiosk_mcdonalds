@@ -7,6 +7,7 @@ const client = new MongoClient(Db, {
 });
 
 var _db;
+const initialData = require("../data/mcDonaldsProducts.json");
 
 module.exports = {
   connectToServer: function (callback) {
@@ -14,6 +15,7 @@ module.exports = {
       if (db) {
         _db = db.db("mcdonalds");
         console.log("Successfully connected to MongoDB.");
+        insertProducts();
       }
       return callback(err);
     });
@@ -23,3 +25,27 @@ module.exports = {
     return _db;
   },
 };
+
+function insertProducts() {
+  const collection = module.exports.getDb().collection("products");
+
+  let counter = 0;
+
+  const promises = initialData.map((product) => {
+    return collection
+      .updateOne({ name: product.name }, { $set: product }, { upsert: true })
+      .then((res) => {
+        counter += res.upsertedCount + res.modifiedCount;
+      });
+  });
+
+  Promise.all(promises)
+    .then(() => {
+      console.log(
+        `Dodano lub zmieniono ${counter} elementów w kolekcji products.`
+      );
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}
