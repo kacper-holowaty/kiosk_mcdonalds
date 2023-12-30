@@ -16,11 +16,10 @@ function CategoryList({ type }) {
       }
     };
     fetchProducts();
-  }, []);
+  }, [type]);
 
   return (
     <div>
-      <h2>{type.charAt(0).toUpperCase() + type.slice(1)}</h2>
       <ul>
         {products.map((item) => (
           <MenuItem key={item._id} item={item} />
