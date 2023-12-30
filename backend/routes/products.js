@@ -24,6 +24,41 @@ productRoutes.route("/products").get(async function (req, res) {
   }
 });
 
+productRoutes.route("/products/:category?").get(async function (req, res) {
+  try {
+    const productsCollection = dbo.getDb("mcdonalds").collection("products");
+
+    // Pobieranie unikalnych kategorii
+    const uniqueCategories = await productsCollection.distinct("type");
+
+    // Jeśli dostarczono parametr kategorii, użyj go
+    // W przeciwnym razie użyj pierwszej unikalnej kategorii lub nie przekazuj żadnej, jeśli nie ma żadnych kategorii
+    const category =
+      req.params.category ||
+      (uniqueCategories.length > 0 ? uniqueCategories[0] : null);
+
+    // Filtrowanie produktów według kategorii
+    const query = category ? { type: category } : {};
+    const results = await productsCollection.find(query).toArray();
+
+    res.send(results);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
+productRoutes.route("/categories").get(async function (req, res) {
+  try {
+    const productsCollection = dbo.getDb("mcdonalds").collection("products");
+    const uniqueCategories = await productsCollection.distinct("type");
+    res.send(uniqueCategories);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
 // recordRoutes.route("/products").get(async (req, res) => {
 //     try {
 //         let db_connect = dbo.getDb("magazyn");
