@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function ChooseOrderType() {
   return (
     <>
-      <h2>ROUTING UDANY!</h2>
+      <h2>Wybierz rodzaj zamówienia</h2>
       <div>
         <Link to="menu">
           <div>

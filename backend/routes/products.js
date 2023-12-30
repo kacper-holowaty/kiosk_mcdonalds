@@ -3,7 +3,27 @@ const productRoutes = express.Router();
 const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
 
-// productRoutes.route("/products");
+//async wraz z promisami:
+productRoutes.route("/products").get(async function (req, res) {
+  try {
+    const productsCollection = dbo.getDb("mcdonalds").collection("products");
+    const results = await new Promise((resolve, reject) => {
+      productsCollection.find().toArray((err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+    // console.log("Pobrano wszystkie produkty");
+    res.send(results);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
 // recordRoutes.route("/products").get(async (req, res) => {
 //     try {
 //         let db_connect = dbo.getDb("magazyn");

@@ -1,10 +1,15 @@
-import React, { createContext, useReducer, useContext } from "react";
+import React, { createContext, useReducer, useContext, useEffect } from "react";
 import axios from "axios";
 
 const AppContext = createContext();
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case "SET_PRODUCTS":
+      return {
+        ...state,
+        products: action.payload,
+      };
     case "ADD_TO_BASKET":
       return {
         ...state,
@@ -21,6 +26,23 @@ export const AppProvider = ({ children }) => {
     basket: [],
   });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/products");
+        dispatch({ type: "SET_PRODUCTS", payload: response.data });
+      } catch (error) {
+        console.error("Błąd podczas pobierania danych:", error);
+      }
+    };
+
+    fetchData();
+
+    // const interval = setInterval(fetchData, 60000); // Pobiera co minutę, możesz dostosować interwał
+
+    // return () => clearInterval(interval);
+  }, []);
+
   const contextValue = {
     state,
     dispatch,
@@ -31,7 +53,7 @@ export const AppProvider = ({ children }) => {
   );
 };
 
-export const useApp = () => {
+export const useAppContext = () => {
   const context = useContext(AppContext);
   if (!context) {
     throw new Error("Nieprawidłowe użycie kontekstu!");
