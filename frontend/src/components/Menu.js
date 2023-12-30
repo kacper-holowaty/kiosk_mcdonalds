@@ -1,16 +1,21 @@
 import React, { useEffect, useState, useRef } from "react";
-// import { Link } from "react-router-dom";
-// import { useAppContext } from "../context/AppContext";
-// import MenuItem from "./MenuItem";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
 import axios from "axios";
 import CategoryList from "./CategoryList";
 function Menu() {
-  // const { state, dispatch } = useAppContext();
-  // const { products } = state;
-
+  const { state } = useAppContext();
+  const { basket } = state;
   const [types, setTypes] = useState([]);
   const [selectedType, setSelectedType] = useState(null);
   const firstTypeRef = useRef(null);
+  const navigate = useNavigate();
+
+  const goToBasket = () => {
+    navigate("/start/menu/basket");
+  };
+
+  useEffect(() => {}, [basket]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -44,6 +49,9 @@ function Menu() {
         ))}
       </ul>
       {selectedType && <CategoryList type={selectedType} />}
+      {basket.length > 0 && (
+        <button onClick={goToBasket}>Przejdź do koszyka</button>
+      )}
     </div>
   );
 }

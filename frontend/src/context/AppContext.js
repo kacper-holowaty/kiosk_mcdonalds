@@ -15,6 +15,29 @@ const reducer = (state, action) => {
         ...state,
         basket: [...state.basket, action.payload],
       };
+    case "REMOVE_FROM_BASKET":
+      return {
+        ...state,
+        basket: state.basket.filter(
+          /*(item) => item._id !== action.payload.id*/ (item, index) =>
+            index !== action.payload.id
+        ),
+      };
+
+    case "CLEAR_BASKET":
+      return {
+        ...state,
+        basket: [],
+      };
+    case "UPDATE_BASKET":
+      const { item: updatedItem, index } = action.payload;
+      const updatedBasket = state.basket.map((item, i) =>
+        i === index ? updatedItem : item
+      );
+      return {
+        ...state,
+        basket: updatedBasket,
+      };
     default:
       return state;
   }

@@ -2,7 +2,7 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-const LoginForm = () => {
+function LoginForm() {
   const formik = useFormik({
     initialValues: {
       login: "",
@@ -54,6 +54,6 @@ const LoginForm = () => {
       </div>
     </form>
   );
-};
+}
 
 export default LoginForm;
