@@ -28,16 +28,6 @@ orderRoutes.route("/orders").post(async (req, res) => {
   try {
     const { order } = req.body;
 
-    // const result = await dbo
-    //   .getDb("mcdonalds")
-    //   .collection("order")
-    //   //   .aggregate(agg)
-    //   .toArray();
-
-    // const newOrder = {
-    //   order,
-    // //   totalAmount: result[0].totalAmount,
-    // };
     const newOrder = order.map((item) => ({
       ...item,
       extraItems: Array.isArray(item.extraItems)
@@ -46,7 +36,7 @@ orderRoutes.route("/orders").post(async (req, res) => {
       quantity: parseInt(item.quantity, 10),
     }));
 
-    await dbo
+    const result = await dbo
       .getDb("mcdonalds")
       .collection("orders")
       .insertOne({ order: newOrder });
@@ -54,6 +44,7 @@ orderRoutes.route("/orders").post(async (req, res) => {
     res.json({
       success: true,
       message: "Dodano zamówienie!",
+      orderId: result.insertedId,
     });
   } catch (error) {
     console.error("Błąd podczas dodawania zamówienia:", error);
@@ -63,12 +54,18 @@ orderRoutes.route("/orders").post(async (req, res) => {
   }
 });
 
-orderRoutes.route("/orders/totalprice").get(async (req, res) => {
+orderRoutes.route("/orders/totalprice/:orderId").get(async (req, res) => {
   try {
+    const { orderId } = req.params;
     const result = await dbo
       .getDb("mcdonalds")
       .collection("orders")
       .aggregate([
+        {
+          $match: {
+            _id: ObjectId(orderId),
+          },
+        },
         {
           $unwind: "$order",
         },

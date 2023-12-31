@@ -16,7 +16,10 @@ function App() {
           <Route path="/start" element={<ChooseOrderType />} />
           <Route path="/start/menu" element={<Menu />} />
           <Route path="/start/menu/basket" element={<Basket />} />
-          <Route path="/start/menu/basket/payment" element={<PaymentPanel />} />
+          <Route
+            path="/start/menu/basket/payment/:orderId"
+            element={<PaymentPanel />}
+          />
           <Route path="/login" element={<LoginForm />} />
         </Routes>
       </AppProvider>

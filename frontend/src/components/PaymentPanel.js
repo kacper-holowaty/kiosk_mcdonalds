@@ -1,32 +1,55 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 function PaymentPanel() {
   const [price, setPrice] = useState(null);
-
-  const getTotalPrice = () => {
-    return new Promise((resolve, reject) => {
-      axios
-        .get(`http://localhost:5000/orders/totalprice`)
-        .then((response) => {
-          resolve(response.data.totalAmount);
-        })
-        .catch((error) => {
-          console.error("Błąd podczas pobierania ceny zamówienia:", error);
-          reject(error);
-        });
-    });
-  };
+  const navigate = useNavigate();
+  const { orderId } = useParams();
 
   useEffect(() => {
+    const getTotalPrice = () => {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(`http://localhost:5000/orders/totalprice/${orderId}`)
+          .then((response) => {
+            resolve(response.data.totalAmount);
+          })
+          .catch((error) => {
+            console.error("Błąd podczas pobierania ceny zamówienia:", error);
+            reject(error);
+          });
+      });
+    };
+
     getTotalPrice()
       .then((price) => setPrice(price))
       .catch((error) =>
         console.error("Błąd podczas pobierania ceny zamówienia:", error)
       );
-  }, []);
-  const navigate = useNavigate();
+  }, [orderId]); // Dodaj orderId do tablicy zależności
+  // const getTotalPrice = () => {
+  //   return new Promise((resolve, reject) => {
+  //     axios
+  //       .get(`http://localhost:5000/orders/totalprice/${orderId}`)
+  //       .then((response) => {
+  //         resolve(response.data.totalAmount);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Błąd podczas pobierania ceny zamówienia:", error);
+  //         reject(error);
+  //       });
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   getTotalPrice()
+  //     .then((price) => setPrice(price))
+  //     .catch((error) =>
+  //       console.error("Błąd podczas pobierania ceny zamówienia:", error)
+  //     );
+  // }, []);
+
   return (
     <div>
       <h2>Podsumowanie zamówienia</h2>

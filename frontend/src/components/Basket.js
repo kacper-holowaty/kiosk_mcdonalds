@@ -45,15 +45,13 @@ function Basket() {
 
       // Wywołanie endpointu API, aby dodać zamówienie do bazy danych
       const response = await axios.post("http://localhost:5000/orders", data);
-
-      // Przetwórz odpowiedź, jeśli to konieczne
-      console.log(response.data);
+      const orderId = response.data.orderId;
 
       // Czyść koszyk po udanym zamówieniu
       // dispatch({ type: "CLEAR_BASKET" });
 
-      // Przejście do ekranu płatności lub odpowiedniej ścieżki
-      navigate("/start/menu/basket/payment");
+      // Przejście do ekranu płatności z przekazaniem orderId
+      navigate(`/start/menu/basket/payment/${orderId}`);
     } catch (error) {
       console.error("Błąd podczas przechodzenia do płatności:", error);
     }
