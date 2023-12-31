@@ -34,7 +34,9 @@ function EditProduct({ item, stopEditing }) {
         <input
           type="number"
           value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
+          onChange={(e) =>
+            setQuantity(Math.max(1, parseInt(e.target.value, 10)))
+          }
         />
       </div>
       <button onClick={handleAddToBasket}>Dodaj do koszyka</button>

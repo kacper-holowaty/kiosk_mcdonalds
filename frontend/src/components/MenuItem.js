@@ -6,10 +6,6 @@ function MenuItem({ item }) {
   //   const { dispatch } = useAppContext();
   const [isEditing, setIsEditing] = useState(false);
 
-  //   const handleChoose = () => {
-  //     // Tutaj możesz ustawić stan, aby pokazać komponent edycji
-  //     setIsEditing(true);
-  //   };
   return (
     <div>
       <h4>

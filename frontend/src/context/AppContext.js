@@ -18,10 +18,7 @@ const reducer = (state, action) => {
     case "REMOVE_FROM_BASKET":
       return {
         ...state,
-        basket: state.basket.filter(
-          /*(item) => item._id !== action.payload.id*/ (item, index) =>
-            index !== action.payload.id
-        ),
+        basket: state.basket.filter((_, index) => index !== action.payload.id),
       };
 
     case "CLEAR_BASKET":

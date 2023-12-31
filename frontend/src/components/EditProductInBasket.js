@@ -34,7 +34,9 @@ function EditProductInBasket({ item, stopEditing, onSubmit }) {
         <input
           type="number"
           value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
+          onChange={(e) =>
+            setQuantity(Math.max(1, parseInt(e.target.value, 10)))
+          }
         />
       </div>
       <button onClick={updateBasket}>Zaktualizuj element</button>

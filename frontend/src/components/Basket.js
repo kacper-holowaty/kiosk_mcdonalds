@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import EditProductInBasket from "./EditProductInBasket";
+import axios from "axios";
 
 function Basket() {
   const { state, dispatch } = useAppContext();
@@ -35,6 +36,29 @@ function Basket() {
     });
     setProduct(null);
   };
+
+  const startPayment = async () => {
+    try {
+      const data = {
+        order: basket,
+      };
+
+      // Wywołanie endpointu API, aby dodać zamówienie do bazy danych
+      const response = await axios.post("http://localhost:5000/orders", data);
+
+      // Przetwórz odpowiedź, jeśli to konieczne
+      console.log(response.data);
+
+      // Czyść koszyk po udanym zamówieniu
+      // dispatch({ type: "CLEAR_BASKET" });
+
+      // Przejście do ekranu płatności lub odpowiedniej ścieżki
+      navigate("/start/menu/basket/payment");
+    } catch (error) {
+      console.error("Błąd podczas przechodzenia do płatności:", error);
+    }
+  };
+
   return (
     <div>
       <h2>Koszyk</h2>
@@ -66,6 +90,7 @@ function Basket() {
             <button onClick={() => navigate("/start/menu")}>
               Powrót do Menu
             </button>
+            <button onClick={() => startPayment()}>Przejdź do płatności</button>
           </div>
         )}
       </div>
