@@ -1,5 +1,6 @@
 import React, { createContext, useReducer, useContext, useEffect } from "react";
 import axios from "axios";
+// import { useNavigate } from "react-router-dom";
 
 const AppContext = createContext();
 
@@ -41,6 +42,7 @@ const reducer = (state, action) => {
 };
 
 export const AppProvider = ({ children }) => {
+  // const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, {
     products: [],
     basket: [],
@@ -62,6 +64,12 @@ export const AppProvider = ({ children }) => {
 
     // return () => clearInterval(interval);
   }, []);
+
+  // const useBackToStartScreen = () => {
+  //   useEffect(() => {
+  //     navigate("/");
+  //   }, []);
+  // };
 
   const contextValue = {
     state,

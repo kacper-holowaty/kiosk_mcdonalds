@@ -6,6 +6,7 @@ import Menu from "./Menu";
 import LoginForm from "./LoginForm";
 import Basket from "./Basket";
 import PaymentPanel from "./PaymentPanel";
+import ThankYou from "./ThankYou";
 
 function App() {
   return (
@@ -19,6 +20,10 @@ function App() {
           <Route
             path="/start/menu/basket/payment/:orderId"
             element={<PaymentPanel />}
+          />
+          <Route
+            path="/start/menu/basket/payment/goodbye"
+            element={<ThankYou />}
           />
           <Route path="/login" element={<LoginForm />} />
         </Routes>

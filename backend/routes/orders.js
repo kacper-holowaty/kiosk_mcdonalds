@@ -3,27 +3,6 @@ const orderRoutes = express.Router();
 const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
 
-// const agg = [
-//   {
-//     $unwind: "$order",
-//   },
-//   {
-//     $project: {
-//       _id: 0,
-//       productName: "$order.name",
-//       totalProductPrice: {
-//         $multiply: ["$order.price", "$order.quantity"],
-//       },
-//     },
-//   },
-//   {
-//     $group: {
-//       _id: null,
-//       totalAmount: { $sum: "$totalProductPrice" },
-//     },
-//   },
-// ];
-
 orderRoutes.route("/orders").post(async (req, res) => {
   try {
     const { order } = req.body;
@@ -99,4 +78,21 @@ orderRoutes.route("/orders/totalprice/:orderId").get(async (req, res) => {
   }
 });
 
+orderRoutes.route("/orders/delete/:orderId").delete(async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    await dbo
+      .getDb("mcdonalds")
+      .collection("orders")
+      .deleteOne({ _id: ObjectId(orderId) });
+
+    res.json({ success: true, message: "Opłacono zamówienie." });
+  } catch (error) {
+    console.error("Błąd podczas opłacania zamówienia:", error);
+    res.status(500).json({
+      success: false,
+      message: "Błąd podczas opłacania zamówienia",
+    });
+  }
+});
 module.exports = orderRoutes;
