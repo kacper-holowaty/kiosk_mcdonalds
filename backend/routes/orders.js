@@ -2,14 +2,6 @@ const express = require("express");
 const orderRoutes = express.Router();
 const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
-const { Mutex } = require("async-mutex");
-// let orderCounter = 0;
-
-// funkcja middleware do utrzymania stanu orderCounter, między żądaniami
-// orderRoutes.use("/orders/generate", (req, res, next) => {
-//   req.orderCounter = req.orderCounter || 0;
-//   next();
-// });
 
 orderRoutes.route("/orders").post(async (req, res) => {
   try {

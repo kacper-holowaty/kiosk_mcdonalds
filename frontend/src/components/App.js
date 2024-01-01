@@ -23,7 +23,7 @@ function App() {
             element={<PaymentPanel />}
           />
           <Route
-            path="/start/menu/basket/payment/goodbye"
+            path="/start/menu/basket/payment/goodbye/:orderId"
             element={<ThankYou />}
           />
           <Route path="/login" element={<LoginForm />} />

@@ -36,14 +36,19 @@ function PaymentPanel() {
     try {
       await axios.delete(`http://localhost:5000/orders/delete/${orderId}`);
 
+      const response = await axios.get("http://localhost:5000/orders/generate");
+
       await axios.post("http://localhost:5000/history/add", {
         order: basket,
         totalAmount: price,
+        orderNumber: response.data.orderNumber,
+        orderId,
       });
+      console.log(orderId);
 
       await dispatch({ type: "CLEAR_BASKET" });
 
-      navigate("/start/menu/basket/payment/goodbye");
+      navigate(`/start/menu/basket/payment/goodbye/${orderId}`);
     } catch (error) {
       console.error("Wystąpił błąd:", error);
     }
