@@ -42,7 +42,6 @@ const reducer = (state, action) => {
 };
 
 export const AppProvider = ({ children }) => {
-  // const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, {
     products: [],
     basket: [],
@@ -59,17 +58,7 @@ export const AppProvider = ({ children }) => {
     };
 
     fetchData();
-
-    // const interval = setInterval(fetchData, 60000); // Pobiera co minutę, możesz dostosować interwał
-
-    // return () => clearInterval(interval);
   }, []);
-
-  // const useBackToStartScreen = () => {
-  //   useEffect(() => {
-  //     navigate("/");
-  //   }, []);
-  // };
 
   const contextValue = {
     state,

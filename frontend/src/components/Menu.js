@@ -11,10 +11,6 @@ function Menu() {
   const firstTypeRef = useRef(null);
   const navigate = useNavigate();
 
-  const goToBasket = () => {
-    navigate("/start/menu/basket");
-  };
-
   useEffect(() => {}, [basket]);
 
   useEffect(() => {
@@ -36,6 +32,7 @@ function Menu() {
   };
   return (
     <div>
+      <button onClick={() => navigate("/start")}>Powrót</button>
       <h1>Wybierz, na co masz dziś ochotę...</h1>
       <ul>
         {types.map((type, id) => (
@@ -50,7 +47,9 @@ function Menu() {
       </ul>
       {selectedType && <CategoryList type={selectedType} />}
       {basket.length > 0 && (
-        <button onClick={goToBasket}>Przejdź do koszyka</button>
+        <button onClick={() => navigate("/start/menu/basket")}>
+          Przejdź do koszyka
+        </button>
       )}
     </div>
   );
