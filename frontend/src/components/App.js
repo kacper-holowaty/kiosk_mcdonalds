@@ -1,3 +1,4 @@
+import React from "react";
 import { AppProvider } from "../context/AppContext";
 import ChooseOrderType from "./ChooseOrderType";
 import StartScreen from "./StartScreen";

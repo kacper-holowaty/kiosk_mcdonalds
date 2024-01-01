@@ -2,6 +2,14 @@ const express = require("express");
 const orderRoutes = express.Router();
 const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
+const { Mutex } = require("async-mutex");
+// let orderCounter = 0;
+
+// funkcja middleware do utrzymania stanu orderCounter, między żądaniami
+// orderRoutes.use("/orders/generate", (req, res, next) => {
+//   req.orderCounter = req.orderCounter || 0;
+//   next();
+// });
 
 orderRoutes.route("/orders").post(async (req, res) => {
   try {
@@ -95,4 +103,23 @@ orderRoutes.route("/orders/delete/:orderId").delete(async (req, res) => {
     });
   }
 });
+
+orderRoutes.route("/orders/generate").get((req, res) => {
+  req.app.locals.orderCounter = req.app.locals.orderCounter || 0;
+  const generateOrderNumber = () => {
+    const orderNumber = req.app.locals.orderCounter.toString().padStart(3, "0");
+
+    if (req.app.locals.orderCounter % 100 === 99) {
+      req.app.locals.orderCounter = 0;
+    } else {
+      req.app.locals.orderCounter++;
+    }
+
+    return orderNumber;
+  };
+
+  const orderNumber = generateOrderNumber();
+  res.json({ orderNumber });
+});
+
 module.exports = orderRoutes;

@@ -1,0 +1,5 @@
+Znalezione błędy: 
+-przy płatności, gdy jest generowany numer zamówienia, to każdy kolejny numer jest 
+większy się o 2 (a powinien o 1), stąd też pierwsze zamówienie ma numer 001, a nie 000. -> BE: routes/orders.js FE: src/components/ThankYou.js
+-po odświeżeniu strony, na endpoincie: /start/menu/basket/payment/goodbye (komponent ThankYou.js), 
+orderNumber się zwiększa za każdym odświeżeniem strony, błąd wizualny    
