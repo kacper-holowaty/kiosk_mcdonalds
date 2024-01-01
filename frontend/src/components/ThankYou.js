@@ -21,7 +21,7 @@ function ThankYou() {
 
         setTimeout(() => {
           navigate("/");
-        }, 15000);
+        }, 10000);
       } catch (error) {
         console.error("Błąd podczas pobierania numeru zamówienia:", error);
       }
