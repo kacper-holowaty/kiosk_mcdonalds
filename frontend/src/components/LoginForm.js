@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+import { useAppContext } from "../context/AppContext";
+import { useNavigate } from "react-router";
 
 function LoginForm() {
+  const { state, dispatch } = useAppContext();
+  const { isAdmin } = state;
+  const [loginError, setLoginError] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAdmin) {
+      const timeout = setTimeout(() => {
+        navigate("/adminpanel/edit");
+      }, 1000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [isAdmin, navigate]);
+
   const formik = useFormik({
     initialValues: {
       login: "",
@@ -12,9 +30,27 @@ function LoginForm() {
       login: Yup.string().required("Pole jest wymagane"),
       password: Yup.string().required("Pole jest wymagane"),
     }),
-    onSubmit: (values) => {
-      // Tutaj można umieścić logikę obsługi zalogowania
-      console.log("Zalogowano pomyślnie!", values);
+    onSubmit: async (values) => {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/login",
+          values
+        );
+        if (response.data.success && response.data.isAdmin) {
+          dispatch({ type: "LOGIN" });
+          setLoginError("");
+          alert("Zalogowano jako administrator!");
+        } else {
+          dispatch({ type: "LOGOUT" });
+          setLoginError("Nieprawidłowy login lub hasło. Spróbuj ponownie.");
+        }
+      } catch (error) {
+        console.error("Nie udało się zalogować", error);
+        dispatch({ type: "LOGOUT" });
+        setLoginError(
+          "Wystąpił błąd podczas logowania. Spróbuj ponownie później."
+        );
+      }
     },
   });
 
@@ -52,6 +88,7 @@ function LoginForm() {
       <div>
         <button type="submit">Zaloguj się</button>
       </div>
+      {loginError && <div style={{ color: "red" }}>{loginError}</div>}
     </form>
   );
 }

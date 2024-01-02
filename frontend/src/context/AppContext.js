@@ -51,6 +51,16 @@ const reducer = (state, action) => {
         ...state,
         basket: updatedBasket,
       };
+    case "LOGIN":
+      return {
+        ...state,
+        isAdmin: true,
+      };
+    case "LOGOUT":
+      return {
+        ...state,
+        isAdmin: false,
+      };
     default:
       return state;
   }
@@ -61,6 +71,7 @@ export const AppProvider = ({ children }) => {
     products: [],
     basket: [],
     takeout: null,
+    isAdmin: false,
   });
 
   useEffect(() => {
