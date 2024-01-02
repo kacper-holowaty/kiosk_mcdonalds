@@ -27,9 +27,7 @@ orderRoutes.route("/orders").post(async (req, res) => {
     });
   } catch (error) {
     console.error("Błąd podczas dodawania zamówienia:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Błąd podczas dodawania zamówienia" });
+    res.sendStatus(500);
   }
 });
 
@@ -71,10 +69,7 @@ orderRoutes.route("/orders/totalprice/:orderId").get(async (req, res) => {
     res.json({ totalAmount: result[0].totalAmount.toFixed(2) });
   } catch (error) {
     console.error("Błąd podczas pobierania danych zamówienia:", error);
-    res.status(500).json({
-      success: false,
-      message: "Błąd podczas pobierania danych zamówienia",
-    });
+    res.sendStatus(500);
   }
 });
 
@@ -89,10 +84,7 @@ orderRoutes.route("/orders/delete/:orderId").delete(async (req, res) => {
     res.json({ success: true, message: "Opłacono zamówienie." });
   } catch (error) {
     console.error("Błąd podczas opłacania zamówienia:", error);
-    res.status(500).json({
-      success: false,
-      message: "Błąd podczas opłacania zamówienia",
-    });
+    res.sendStatus(500);
   }
 });
 

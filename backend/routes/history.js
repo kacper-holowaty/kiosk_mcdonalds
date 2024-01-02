@@ -24,10 +24,7 @@ historyRoutes.route("/history/add").post(async (req, res) => {
     });
   } catch (error) {
     console.error("Błąd podczas dodawania zamówienia do archiwum:", error);
-    res.status(500).json({
-      success: false,
-      message: "Błąd podczas dodawania zamówienia do historii płatności",
-    });
+    res.sendStatus(500);
   }
 });
 
@@ -56,10 +53,7 @@ historyRoutes
         "Błąd podczas pobierania numeru zamówienia z historii:",
         error
       );
-      res.status(500).json({
-        success: false,
-        message: "Błąd podczas pobierania numeru zamówienia z historii.",
-      });
+      res.sendStatus(500);
     }
   });
 
