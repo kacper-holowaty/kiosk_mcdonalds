@@ -14,7 +14,7 @@ function LoginForm() {
   useEffect(() => {
     if (isAdmin) {
       const timeout = setTimeout(() => {
-        navigate("/adminpanel/edit");
+        navigate("/adminpanel/main");
       }, 1000);
 
       return () => clearTimeout(timeout);

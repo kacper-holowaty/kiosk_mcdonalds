@@ -45,7 +45,6 @@ function PaymentPanel() {
         orderNumber: response.data.orderNumber,
         orderId,
       });
-      console.log(orderId);
 
       await dispatch({ type: "CLEAR_BASKET" });
       await dispatch({ type: "SET_TAKEOUT_AS_NULL" });

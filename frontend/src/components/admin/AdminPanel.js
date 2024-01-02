@@ -14,13 +14,13 @@ function AdminPanel() {
       <nav>
         <ul>
           <li>
-            <NavLink to="/adminpanel/edit">Edit Product</NavLink>
+            <NavLink to="/adminpanel/main">Strona Główna</NavLink>
           </li>
           <li>
-            <NavLink to="/adminpanel/add">Add Product</NavLink>
+            <NavLink to="/adminpanel/add">Dodaj nowy produkt</NavLink>
           </li>
           <li>
-            <NavLink to="/adminpanel/statistics">Statistics</NavLink>
+            <NavLink to="/adminpanel/statistics">Statystyki</NavLink>
           </li>
           <li>
             <button onClick={handleLogout}>Wyloguj się</button>

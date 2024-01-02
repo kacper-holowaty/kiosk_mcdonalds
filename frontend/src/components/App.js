@@ -1,5 +1,4 @@
 import React from "react";
-// import { useAppContext } from "../context/AppContext";
 import ChooseOrderType from "./ChooseOrderType";
 import StartScreen from "./StartScreen";
 import { Route, Routes } from "react-router-dom";
@@ -9,17 +8,13 @@ import Basket from "./Basket";
 import PaymentPanel from "./PaymentPanel";
 import ThankYou from "./ThankYou";
 import AdminPanel from "./admin/AdminPanel";
-import EditForm from "./admin/EditForm";
+import AdminMain from "./admin/AdminMain";
 import Statistics from "./admin/Statistics";
 import AddProductForm from "./admin/AddProductForm";
 
 function App() {
-  // const { state } = useAppContext();
-  // const { isAdmin } = state;
   return (
     <>
-      {/* <AppProvider> */}
-      {/* {isAdmin && <AdminPanel />} */}
       <Routes>
         <Route path="/" element={<StartScreen />} />
         <Route path="/start" element={<ChooseOrderType />} />
@@ -35,11 +30,10 @@ function App() {
         />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/adminpanel" element={<AdminPanel />} />
-        <Route path="/adminpanel/edit" element={<EditForm />} />
+        <Route path="/adminpanel/main" element={<AdminMain />} />
         <Route path="/adminpanel/add" element={<AddProductForm />} />
         <Route path="/adminpanel/statistics" element={<Statistics />} />
       </Routes>
-      {/* </AppProvider> */}
     </>
   );
 }

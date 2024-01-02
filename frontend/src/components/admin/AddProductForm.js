@@ -1,5 +1,10 @@
+import { useAppContext } from "../../context/AppContext";
+import AdminPanel from "./AdminPanel";
+
 function AddProductForm() {
-  return <div></div>;
+  const { state } = useAppContext();
+  const { isAdmin } = state;
+  return <div>{isAdmin && <AdminPanel />}</div>;
 }
 
 export default AddProductForm;

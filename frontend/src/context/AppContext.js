@@ -85,7 +85,7 @@ export const AppProvider = ({ children }) => {
     };
 
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   const contextValue = {
     state,
