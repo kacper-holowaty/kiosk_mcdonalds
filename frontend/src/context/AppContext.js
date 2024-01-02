@@ -1,6 +1,5 @@
 import React, { createContext, useReducer, useContext, useEffect } from "react";
 import axios from "axios";
-// import { useNavigate } from "react-router-dom";
 
 const AppContext = createContext();
 
@@ -10,6 +9,22 @@ const reducer = (state, action) => {
       return {
         ...state,
         products: action.payload,
+      };
+
+    case "EAT_IN":
+      return {
+        ...state,
+        takeout: false,
+      };
+    case "TAKEOUT":
+      return {
+        ...state,
+        takeout: true,
+      };
+    case "SET_TAKEOUT_AS_NULL":
+      return {
+        ...state,
+        takeout: null,
       };
     case "ADD_TO_BASKET":
       return {
@@ -45,6 +60,7 @@ export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, {
     products: [],
     basket: [],
+    takeout: null,
   });
 
   useEffect(() => {

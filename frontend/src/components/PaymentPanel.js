@@ -8,7 +8,7 @@ function PaymentPanel() {
   const navigate = useNavigate();
   const { orderId } = useParams();
   const { state, dispatch } = useAppContext();
-  const { basket } = state;
+  const { basket, takeout } = state;
 
   useEffect(() => {
     const getTotalPrice = () => {
@@ -40,6 +40,7 @@ function PaymentPanel() {
 
       await axios.post("http://localhost:5000/history/add", {
         order: basket,
+        takeout,
         totalAmount: price,
         orderNumber: response.data.orderNumber,
         orderId,
@@ -47,6 +48,7 @@ function PaymentPanel() {
       console.log(orderId);
 
       await dispatch({ type: "CLEAR_BASKET" });
+      await dispatch({ type: "SET_TAKEOUT_AS_NULL" });
 
       navigate(`/start/menu/basket/payment/goodbye/${orderId}`);
     } catch (error) {
@@ -57,6 +59,7 @@ function PaymentPanel() {
   return (
     <div>
       <h2>Podsumowanie zamówienia</h2>
+      <p>Rodzaj zamówienia: {takeout ? "Na wynos" : "Na miejscu"}</p>
       <p>
         Łączna cena zamówienia:{" "}
         {price !== null ? `${price} zł` : "Trwa obliczanie ceny..."}

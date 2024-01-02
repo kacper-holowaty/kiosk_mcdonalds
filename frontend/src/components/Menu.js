@@ -27,6 +27,14 @@ function Menu() {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    if (firstTypeRef.current) {
+      const firstType = firstTypeRef.current.querySelector("li");
+      firstType && firstType.focus();
+      setSelectedType(firstType ? firstType.innerText : null);
+    }
+  }, [types]);
+
   const handleClick = (type) => {
     setSelectedType(type);
   };
@@ -34,13 +42,9 @@ function Menu() {
     <div>
       <button onClick={() => navigate("/start")}>Powrót</button>
       <h1>Wybierz, na co masz dziś ochotę...</h1>
-      <ul>
-        {types.map((type, id) => (
-          <li
-            key={type}
-            onClick={() => handleClick(type)}
-            ref={id === 0 ? firstTypeRef : null}
-          >
+      <ul ref={firstTypeRef}>
+        {types.map((type) => (
+          <li key={type} onClick={() => handleClick(type)} tabIndex={0}>
             {type}
           </li>
         ))}

@@ -6,7 +6,7 @@ import axios from "axios";
 
 function Basket() {
   const { state, dispatch } = useAppContext();
-  const { basket } = state;
+  const { basket, takeout } = state;
   const [product, setProduct] = useState(null);
   const navigate = useNavigate();
   const editProduct = (item) => {
@@ -25,10 +25,6 @@ function Basket() {
     }
   }, [basket, navigate]);
 
-  const clearBasket = () => {
-    dispatch({ type: "CLEAR_BASKET" });
-  };
-
   const handleSubmit = (editedProduct, index) => {
     dispatch({
       type: "UPDATE_BASKET",
@@ -41,6 +37,7 @@ function Basket() {
     try {
       const data = {
         order: basket,
+        takeout,
       };
 
       const response = await axios.post("http://localhost:5000/orders", data);
@@ -79,7 +76,9 @@ function Basket() {
         )}
         {basket.length > 0 && (
           <div>
-            <button onClick={clearBasket}>Usuń wszystkie</button>
+            <button onClick={() => dispatch({ type: "CLEAR_BASKET" })}>
+              Usuń wszystkie
+            </button>
             <button onClick={() => navigate("/start/menu")}>
               Powrót do Menu
             </button>

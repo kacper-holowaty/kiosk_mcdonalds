@@ -5,11 +5,12 @@ const ObjectId = require("mongodb").ObjectId;
 
 historyRoutes.route("/history/add").post(async (req, res) => {
   try {
-    const { order, totalAmount, orderNumber, orderId } = req.body;
+    const { order, takeout, totalAmount, orderNumber, orderId } = req.body;
 
     const data = {
       _id: ObjectId(orderId),
       order,
+      takeout,
       totalAmount,
       date: new Date().toLocaleString(),
       orderNumber,

@@ -5,7 +5,7 @@ const ObjectId = require("mongodb").ObjectId;
 
 orderRoutes.route("/orders").post(async (req, res) => {
   try {
-    const { order } = req.body;
+    const { order, takeout } = req.body;
 
     const newOrder = order.map((item) => ({
       ...item,
@@ -18,7 +18,7 @@ orderRoutes.route("/orders").post(async (req, res) => {
     const result = await dbo
       .getDb("mcdonalds")
       .collection("orders")
-      .insertOne({ order: newOrder });
+      .insertOne({ order: newOrder, takeout });
 
     res.json({
       success: true,
