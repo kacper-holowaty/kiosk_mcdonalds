@@ -87,15 +87,15 @@ productRoutes.route("/products/:id").put(async function (req, res) {
         .json({ error: "Nieprawidłowy identyfikator produktu." });
     }
 
-    const existingProduct = await db_connect
-      .collection("products")
-      .findOne({ name: req.body.name, _id: { $ne: ObjectId(productId) } });
+    // const existingProduct = await db_connect
+    //   .collection("products")
+    //   .findOne({ name: req.body.name, _id: { $ne: ObjectId(productId) } });
 
-    if (existingProduct) {
-      return res
-        .status(400)
-        .json({ error: "Produkt o tej nazwie już istnieje." });
-    }
+    // if (existingProduct) {
+    //   return res
+    //     .status(400)
+    //     .json({ error: "Produkt o tej nazwie już istnieje." });
+    // }
 
     const updatedProduct = {
       name: req.body.name,
@@ -107,11 +107,11 @@ productRoutes.route("/products/:id").put(async function (req, res) {
       .collection("products")
       .updateOne({ _id: ObjectId(productId) }, { $set: updatedProduct });
 
-    if (result.matchedCount === 0) {
-      return res
-        .status(404)
-        .json({ error: "Produkt o podanym identyfikatorze nie istnieje." });
-    }
+    // if (result.matchedCount === 0) {
+    //   return res
+    //     .status(404)
+    //     .json({ error: "Produkt o podanym identyfikatorze nie istnieje." });
+    // }
 
     res.json({ message: "Produkt został zaktualizowany pomyślnie." });
   } catch (error) {

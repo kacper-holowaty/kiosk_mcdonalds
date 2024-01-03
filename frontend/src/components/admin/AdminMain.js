@@ -37,7 +37,7 @@ function AdminMain() {
           </li>
         ))}
       </ul>
-      {product && <EditForm editedProduct={product} onCancel={onCancel} />}
+      {product && <EditForm editedProduct={product} stopEditting={onCancel} />}
     </div>
   );
 }

@@ -15,7 +15,7 @@ module.exports = {
       if (db) {
         _db = db.db("mcdonalds");
         console.log("Successfully connected to MongoDB.");
-        insertProducts();
+        // insertProducts();
       }
       return callback(err);
     });
@@ -26,6 +26,7 @@ module.exports = {
   },
 };
 
+//kod do dodania danych początkowych do bazy, najlepiej użyć jednorazowo, później zakomentować.
 function insertProducts() {
   const collection = module.exports.getDb().collection("products");
 

@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useAppContext } from "../../context/AppContext";
 
-function EditForm({ editedProduct, onCancel }) {
+function EditForm({ editedProduct, stopEditting }) {
   const { dispatch } = useAppContext();
   const formik = useFormik({
     initialValues: {
@@ -27,6 +27,7 @@ function EditForm({ editedProduct, onCancel }) {
 
         const response = await axios.get("http://localhost:5000/products");
         dispatch({ type: "SET_PRODUCTS", payload: response.data });
+        stopEditting();
       } catch (error) {
         console.error("Błąd podczas edycji produktu:", error);
       }
@@ -96,7 +97,7 @@ function EditForm({ editedProduct, onCancel }) {
 
         <div>
           <button type="submit">Zapisz zmiany</button>
-          <button type="button" onClick={onCancel}>
+          <button type="button" onClick={stopEditting}>
             Anuluj
           </button>
         </div>
