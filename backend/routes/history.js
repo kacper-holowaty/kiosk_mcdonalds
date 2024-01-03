@@ -12,7 +12,7 @@ historyRoutes.route("/history/add").post(async (req, res) => {
       order,
       takeout,
       totalAmount,
-      date: new Date().toLocaleString(),
+      date: new Date(),
       orderNumber,
     };
 
@@ -57,5 +57,73 @@ historyRoutes
       res.sendStatus(500);
     }
   });
+
+historyRoutes.route("/statistics/daily").get((req, res) => {
+  function getDailyStatistics() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const dailyStatistics = await dbo
+          .getDb("mcdonalds")
+          .collection("history")
+          .aggregate([
+            {
+              $group: {
+                _id: {
+                  $dateToString: { format: "%d.%m.%Y", date: "$date" },
+                },
+                totalAmount: { $sum: { $toDouble: "$totalAmount" } },
+                numberOfOrders: { $sum: 1 },
+              },
+            },
+          ])
+          .toArray();
+
+        resolve(dailyStatistics);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+  getDailyStatistics()
+    .then((dailyStatistics) => res.json(dailyStatistics))
+    .catch((error) => {
+      console.error("Błąd podczas pobierania statystyk dziennych:", error);
+      res.sendStatus(500);
+    });
+});
+
+historyRoutes.route("/statistics/monthly").get((req, res) => {
+  function getMonthlyStatistics() {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const monthlyStatistics = await dbo
+          .getDb("mcdonalds")
+          .collection("history")
+          .aggregate([
+            {
+              $group: {
+                _id: {
+                  $dateToString: { format: "%m.%Y", date: "$date" },
+                },
+                totalAmount: { $sum: { $toDouble: "$totalAmount" } },
+                numberOfOrders: { $sum: 1 },
+              },
+            },
+          ])
+          .toArray();
+
+        resolve(monthlyStatistics);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+  getMonthlyStatistics()
+    .then((monthlyStatistics) => res.json(monthlyStatistics))
+    .catch((error) => {
+      console.error("Błąd podczas pobierania statystyk miesięcznych:", error);
+      res.sendStatus(500);
+    });
+});
 
 module.exports = historyRoutes;

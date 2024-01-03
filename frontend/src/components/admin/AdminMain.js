@@ -3,6 +3,7 @@ import { useAppContext } from "../../context/AppContext";
 import AdminPanel from "./AdminPanel";
 import axios from "axios";
 import EditForm from "./EditForm";
+import { Link } from "react-router-dom";
 
 function AdminMain() {
   const { state, dispatch } = useAppContext();
@@ -42,11 +43,16 @@ function AdminMain() {
     };
 
     fetchCategories();
-  }, []);
+  }, [categories]);
 
   const handleDeleteProduct = async (productId) => {
     try {
       await axios.delete(`http://localhost:5000/products/${productId}`);
+
+      const responseAllProducts = await axios.get(
+        "http://localhost:5000/products"
+      );
+      dispatch({ type: "SET_PRODUCTS", payload: responseAllProducts.data });
 
       if (nameFilter || categoryFilter) {
         const response = await axios.get(
@@ -59,9 +65,6 @@ function AdminMain() {
           }
         );
         setFilteredProducts(response.data);
-      } else {
-        const response = await axios.get("http://localhost:5000/products");
-        dispatch({ type: "SET_PRODUCTS", payload: response.data });
       }
     } catch (error) {
       console.error("Błąd podczas usuwania produktu:", error);
@@ -73,6 +76,11 @@ function AdminMain() {
       const productId = updatedProduct._id;
       await axios.put(`http://localhost:5000/products/${productId}`, values);
 
+      const responseAllProducts = await axios.get(
+        "http://localhost:5000/products"
+      );
+      dispatch({ type: "SET_PRODUCTS", payload: responseAllProducts.data });
+
       if (nameFilter || categoryFilter) {
         const response = await axios.get(
           "http://localhost:5000/admin/products",
@@ -84,11 +92,7 @@ function AdminMain() {
           }
         );
         setFilteredProducts(response.data);
-      } else {
-        const response = await axios.get("http://localhost:5000/products");
-        dispatch({ type: "SET_PRODUCTS", payload: response.data });
       }
-
       setProduct(null);
     } catch (error) {
       console.error("Błąd podczas aktualizacji produktu:", error);
@@ -105,42 +109,54 @@ function AdminMain() {
   return (
     <div>
       {isAdmin && <AdminPanel />}
-      <div>
-        <input
-          type="text"
-          placeholder="Wyszukaj produkt po nazwie"
-          value={nameFilter}
-          onChange={(e) => setNameFilter(e.target.value)}
-        />
-        <select
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-        >
-          <option value="">Wybierz kategorię...</option>
-          {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
-      </div>
-      <ul>
-        {displayedProducts.map((product) => (
-          <li key={product._id}>
-            {product.name} - {product.type} - {product.price} zł
-            <button onClick={() => setProduct(product)}>Edytuj</button>
-            <button onClick={() => handleDeleteProduct(product._id)}>
-              Usuń
-            </button>
-          </li>
-        ))}
-      </ul>
-      {product && (
-        <EditForm
-          editedProduct={product}
-          stopEditting={onCancel}
-          updateProduct={handleUpdateProduct}
-        />
+      {isAdmin ? (
+        <div>
+          <div>
+            <input
+              type="text"
+              placeholder="Wyszukaj produkt po nazwie"
+              value={nameFilter}
+              onChange={(e) => setNameFilter(e.target.value)}
+            />
+            <select
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+            >
+              <option value="">Wybierz kategorię...</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </div>
+          <ul>
+            {displayedProducts.map((product) => (
+              <li key={product._id}>
+                {product.name} - {product.type} - {product.price} zł
+                <button onClick={() => setProduct(product)}>Edytuj</button>
+                <button onClick={() => handleDeleteProduct(product._id)}>
+                  Usuń
+                </button>
+              </li>
+            ))}
+          </ul>
+          {product && (
+            <EditForm
+              editedProduct={product}
+              stopEditting={onCancel}
+              updateProduct={handleUpdateProduct}
+            />
+          )}
+        </div>
+      ) : (
+        <div>
+          <div>Nie możesz jeszcze edytować danych...</div>
+          <div>Musisz się zalogować!</div>
+          <Link to="/login">
+            <button>Zaloguj się</button>
+          </Link>
+        </div>
       )}
     </div>
   );
