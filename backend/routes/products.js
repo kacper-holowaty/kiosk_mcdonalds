@@ -87,15 +87,15 @@ productRoutes.route("/products/:id").put(async function (req, res) {
         .json({ error: "Nieprawidłowy identyfikator produktu." });
     }
 
-    // const existingProduct = await db_connect
-    //   .collection("products")
-    //   .findOne({ name: req.body.name, _id: { $ne: ObjectId(productId) } });
+    const existingProduct = await db_connect
+      .collection("products")
+      .findOne({ name: req.body.name, _id: { $ne: ObjectId(productId) } });
 
-    // if (existingProduct) {
-    //   return res
-    //     .status(400)
-    //     .json({ error: "Produkt o tej nazwie już istnieje." });
-    // }
+    if (existingProduct) {
+      return res
+        .status(400)
+        .json({ error: "Produkt o tej nazwie już istnieje." });
+    }
 
     const updatedProduct = {
       name: req.body.name,
@@ -107,11 +107,11 @@ productRoutes.route("/products/:id").put(async function (req, res) {
       .collection("products")
       .updateOne({ _id: ObjectId(productId) }, { $set: updatedProduct });
 
-    // if (result.matchedCount === 0) {
-    //   return res
-    //     .status(404)
-    //     .json({ error: "Produkt o podanym identyfikatorze nie istnieje." });
-    // }
+    if (result.matchedCount === 0) {
+      return res
+        .status(404)
+        .json({ error: "Produkt o podanym identyfikatorze nie istnieje." });
+    }
 
     res.json({ message: "Produkt został zaktualizowany pomyślnie." });
   } catch (error) {
@@ -119,6 +119,57 @@ productRoutes.route("/products/:id").put(async function (req, res) {
     res
       .status(500)
       .json({ error: "Wystąpił błąd podczas aktualizacji produktu." });
+  }
+});
+
+productRoutes.route("/products").post(async function (req, res) {
+  let db_connect = dbo.getDb("mcdonalds");
+
+  try {
+    const existingProduct = await db_connect
+      .collection("products")
+      .findOne({ name: req.body.name });
+
+    if (existingProduct) {
+      res.status(400).json({ error: "Produkt o tej nazwie już istnieje." });
+    } else {
+      let myobj = {
+        name: req.body.name,
+        type: req.body.type,
+        price: req.body.price,
+      };
+
+      await db_connect.collection("products").insertOne(myobj);
+      res.json({ message: "Produkt został dodany." });
+    }
+  } catch (error) {
+    console.error("Błąd podczas dodawania produktu:", error);
+    res
+      .status(500)
+      .json({ error: "Wystąpił błąd podczas dodawania produktu." });
+  }
+});
+
+productRoutes.route("/admin/products").get(async function (req, res) {
+  try {
+    const productsCollection = dbo.getDb("mcdonalds").collection("products");
+    const nameFilter = req.query.name || "";
+    const categoryFilter = req.query.type || "";
+
+    const query = {
+      name: { $regex: new RegExp(`^${nameFilter}`, "i") },
+    };
+
+    if (categoryFilter) {
+      query.type = categoryFilter;
+    }
+
+    const results = await productsCollection.find(query).toArray();
+
+    res.send(results);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
   }
 });
 

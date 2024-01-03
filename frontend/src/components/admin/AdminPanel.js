@@ -7,7 +7,7 @@ function AdminPanel() {
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
-    navigate("/login");
+    navigate("/");
   };
   return (
     <div>

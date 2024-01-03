@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppContext } from "../../context/AppContext";
 import AdminPanel from "./AdminPanel";
 import axios from "axios";
@@ -8,14 +8,90 @@ function AdminMain() {
   const { state, dispatch } = useAppContext();
   const { isAdmin, products } = state;
   const [product, setProduct] = useState(null);
+  const [nameFilter, setNameFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/admin/products`,
+          {
+            params: { name: nameFilter, type: categoryFilter },
+          }
+        );
+        setFilteredProducts(response.data);
+      } catch (error) {
+        console.error("Błąd podczas pobierania danych:", error);
+      }
+    };
+
+    fetchData();
+  }, [nameFilter, categoryFilter]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/categories");
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Błąd podczas pobierania kategorii:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleDeleteProduct = async (productId) => {
     try {
       await axios.delete(`http://localhost:5000/products/${productId}`);
-      const response = await axios.get("http://localhost:5000/products");
-      dispatch({ type: "SET_PRODUCTS", payload: response.data });
+
+      if (nameFilter || categoryFilter) {
+        const response = await axios.get(
+          "http://localhost:5000/admin/products",
+          {
+            params: {
+              name: nameFilter,
+              type: categoryFilter,
+            },
+          }
+        );
+        setFilteredProducts(response.data);
+      } else {
+        const response = await axios.get("http://localhost:5000/products");
+        dispatch({ type: "SET_PRODUCTS", payload: response.data });
+      }
     } catch (error) {
       console.error("Błąd podczas usuwania produktu:", error);
+    }
+  };
+
+  const handleUpdateProduct = async (updatedProduct, values) => {
+    try {
+      const productId = updatedProduct._id;
+      await axios.put(`http://localhost:5000/products/${productId}`, values);
+
+      if (nameFilter || categoryFilter) {
+        const response = await axios.get(
+          "http://localhost:5000/admin/products",
+          {
+            params: {
+              name: nameFilter,
+              type: categoryFilter,
+            },
+          }
+        );
+        setFilteredProducts(response.data);
+      } else {
+        const response = await axios.get("http://localhost:5000/products");
+        dispatch({ type: "SET_PRODUCTS", payload: response.data });
+      }
+
+      setProduct(null);
+    } catch (error) {
+      console.error("Błąd podczas aktualizacji produktu:", error);
     }
   };
 
@@ -23,13 +99,35 @@ function AdminMain() {
     setProduct(null);
   };
 
+  const displayedProducts =
+    nameFilter || categoryFilter ? filteredProducts : products;
+
   return (
     <div>
       {isAdmin && <AdminPanel />}
+      <div>
+        <input
+          type="text"
+          placeholder="Wyszukaj produkt po nazwie"
+          value={nameFilter}
+          onChange={(e) => setNameFilter(e.target.value)}
+        />
+        <select
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+        >
+          <option value="">Wybierz kategorię...</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
       <ul>
-        {products.map((product) => (
+        {displayedProducts.map((product) => (
           <li key={product._id}>
-            {product.name} - {product.type} - {product.price}
+            {product.name} - {product.type} - {product.price} zł
             <button onClick={() => setProduct(product)}>Edytuj</button>
             <button onClick={() => handleDeleteProduct(product._id)}>
               Usuń
@@ -37,7 +135,13 @@ function AdminMain() {
           </li>
         ))}
       </ul>
-      {product && <EditForm editedProduct={product} stopEditting={onCancel} />}
+      {product && (
+        <EditForm
+          editedProduct={product}
+          stopEditting={onCancel}
+          updateProduct={handleUpdateProduct}
+        />
+      )}
     </div>
   );
 }

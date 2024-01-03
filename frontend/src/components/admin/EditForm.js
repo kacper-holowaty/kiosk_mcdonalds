@@ -1,10 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
-import { useAppContext } from "../../context/AppContext";
 
-function EditForm({ editedProduct, stopEditting }) {
-  const { dispatch } = useAppContext();
+function EditForm({ editedProduct, stopEditting, updateProduct }) {
   const formik = useFormik({
     initialValues: {
       name: editedProduct ? editedProduct.name : "",
@@ -19,18 +16,7 @@ function EditForm({ editedProduct, stopEditting }) {
         .min(0.01, "Cena musi być większa niż 0"),
     }),
     onSubmit: async (values) => {
-      try {
-        await axios.put(
-          `http://localhost:5000/products/${editedProduct._id}`,
-          values
-        );
-
-        const response = await axios.get("http://localhost:5000/products");
-        dispatch({ type: "SET_PRODUCTS", payload: response.data });
-        stopEditting();
-      } catch (error) {
-        console.error("Błąd podczas edycji produktu:", error);
-      }
+      updateProduct(editedProduct, values);
     },
   });
   return (
@@ -82,7 +68,7 @@ function EditForm({ editedProduct, stopEditting }) {
               const value = parseFloat(e.target.value.replace(",", "."));
 
               if (!isNaN(value)) {
-                const formattedValue = value.toPrecision(4);
+                const formattedValue = value.toFixed(2);
                 formik.setFieldValue("price", formattedValue);
               }
 
