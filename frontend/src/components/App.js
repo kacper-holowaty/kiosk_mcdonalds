@@ -14,7 +14,12 @@ import AddProductForm from "./admin/AddProductForm";
 
 function App() {
   return (
-    <>
+    <div
+      className="min-h-screen bg-cover bg-center bg-fixed"
+      style={{
+        backgroundImage: 'url("/top-view-burger-orange-background.jpg")',
+      }}
+    >
       <Routes>
         <Route path="/" element={<StartScreen />} />
         <Route path="/start" element={<ChooseOrderType />} />
@@ -34,7 +39,7 @@ function App() {
         <Route path="/adminpanel/add" element={<AddProductForm />} />
         <Route path="/adminpanel/statistics" element={<Statistics />} />
       </Routes>
-    </>
+    </div>
   );
 }
 

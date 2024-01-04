@@ -10,7 +10,6 @@ function Statistics() {
   const [monthlyStatistics, setMonthlyStatistics] = useState([]);
 
   useEffect(() => {
-    // Pobierz statystyki dziennie
     axios
       .get("http://localhost:5000/statistics/daily")
       .then((response) => setDailyStatistics(response.data))
@@ -18,7 +17,6 @@ function Statistics() {
         console.error("Błąd podczas pobierania statystyk dziennych:", error)
       );
 
-    // Pobierz statystyki miesięczne
     axios
       .get("http://localhost:5000/statistics/monthly")
       .then((response) => setMonthlyStatistics(response.data))
@@ -33,18 +31,30 @@ function Statistics() {
         <h2>Statystyki dziennie</h2>
         <ul>
           {dailyStatistics.map((stat) => (
-            <li
-              key={stat._id}
-            >{`${stat._id}: ${stat.totalAmount} zł (${stat.numberOfOrders} zamówień)`}</li>
+            <li key={stat._id}>{`${stat._id}: ${stat.totalAmount} zł (${
+              stat.numberOfOrders
+            } ${
+              stat.numberOfOrders === 1
+                ? "zamówienie"
+                : stat.numberOfOrders >= 2 && stat.numberOfOrders <= 4
+                ? "zamówienia"
+                : "zamówień"
+            })`}</li>
           ))}
         </ul>
 
         <h2>Statystyki miesięczne</h2>
         <ul>
           {monthlyStatistics.map((stat) => (
-            <li
-              key={stat._id}
-            >{`${stat._id}: ${stat.totalAmount} zł (${stat.numberOfOrders} zamówień)`}</li>
+            <li key={stat._id}>{`${stat._id}: ${stat.totalAmount} zł (${
+              stat.numberOfOrders
+            } ${
+              stat.numberOfOrders === 1
+                ? "zamówienie"
+                : stat.numberOfOrders >= 2 && stat.numberOfOrders <= 4
+                ? "zamówienia"
+                : "zamówień"
+            })`}</li>
           ))}
         </ul>
       </div>

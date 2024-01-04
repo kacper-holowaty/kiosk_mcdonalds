@@ -1,5 +1,6 @@
 import React, { useMemo, useRef, useState, useLayoutEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { SiMcdonalds } from "react-icons/si";
 
 function StartScreen() {
   const navigate = useNavigate();
@@ -28,22 +29,27 @@ function StartScreen() {
   }, [headers]);
 
   const handleClick = (e) => {
-    // Sprawdź, czy kliknięcie pochodzi z przycisku
     if (e.target.tagName === "BUTTON") {
       return;
     }
-    // Po kliknięciu w dowolne miejsce na ekranie, przechodzimy do ścieżki /start
     navigate("/start");
   };
 
-  //Routing działa, tylko trzeba w css pomieszać aby obejmowało całą stronę ten div pierwszy
   return (
-    <div /*style={{ width: 1024, height: 1024 }}*/ onClick={handleClick}>
+    <div
+      className="min-h-screen flex flex-col items-center justify-center"
+      onClick={handleClick}
+    >
       <Link to="/login">
-        <button>Zaloguj się</button>
+        <button className="fixed top-4 right-4 bg-red-500 hover:bg-red-700 px-6 py-3 text-white rounded-lg text-xl">
+          Zaloguj się
+        </button>
       </Link>
-      <h2>{slogan}</h2>
-      <h3>Kliknij, aby złożyć zamówienie</h3>
+      <div className="text-9xl font-bold mb-28">
+        <SiMcdonalds />
+      </div>
+      <h2 className="text-4xl font-bold mb-4">{slogan}</h2>
+      <h3 className="text-lg">Kliknij, aby złożyć zamówienie</h3>
     </div>
   );
 }

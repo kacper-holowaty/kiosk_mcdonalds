@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-// import { useAppContext } from "../context/AppContext";
 
 function EditProductInBasket({ item, stopEditing, onSubmit }) {
   const [extraItems, setExtraItems] = useState(item.extraItems || []);
   const [quantity, setQuantity] = useState(item.quantity || 1);
-  //   const { dispatch } = useAppContext();
 
   const updateBasket = () => {
     const updatedItem = {
@@ -13,7 +11,6 @@ function EditProductInBasket({ item, stopEditing, onSubmit }) {
       quantity,
     };
 
-    // dispatch({ type: "UPDATE_BASKET", payload: updatedItem });
     onSubmit(updatedItem);
     stopEditing();
   };
