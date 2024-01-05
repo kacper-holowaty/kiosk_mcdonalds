@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAppContext } from "../../context/AppContext";
 import AdminPanel from "./AdminPanel";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function Statistics() {
   const { state } = useAppContext();
@@ -27,37 +28,58 @@ function Statistics() {
   return (
     <div>
       {isAdmin && <AdminPanel />}
-      <div>
-        <h2>Statystyki dziennie</h2>
-        <ul>
-          {dailyStatistics.map((stat) => (
-            <li key={stat._id}>{`${stat._id}: ${stat.totalAmount} zł (${
-              stat.numberOfOrders
-            } ${
-              stat.numberOfOrders === 1
-                ? "zamówienie"
-                : stat.numberOfOrders >= 2 && stat.numberOfOrders <= 4
-                ? "zamówienia"
-                : "zamówień"
-            })`}</li>
-          ))}
-        </ul>
-
-        <h2>Statystyki miesięczne</h2>
-        <ul>
-          {monthlyStatistics.map((stat) => (
-            <li key={stat._id}>{`${stat._id}: ${stat.totalAmount} zł (${
-              stat.numberOfOrders
-            } ${
-              stat.numberOfOrders === 1
-                ? "zamówienie"
-                : stat.numberOfOrders >= 2 && stat.numberOfOrders <= 4
-                ? "zamówienia"
-                : "zamówień"
-            })`}</li>
-          ))}
-        </ul>
-      </div>
+      {isAdmin ? (
+        <div className="flex">
+          <div className="w-1/2 p-4">
+            <div className="bg-gray-200 p-4 rounded-md">
+              <h2 className="text-xl font-semibold mb-2 text-center">
+                Statystyki dziennie
+              </h2>
+              <ul>
+                {dailyStatistics.map((stat) => (
+                  <li key={stat._id} className="mb-1">{`${stat._id}: ${
+                    stat.totalAmount
+                  } zł (${stat.numberOfOrders} ${
+                    stat.numberOfOrders === 1
+                      ? "zamówienie"
+                      : stat.numberOfOrders >= 2 && stat.numberOfOrders <= 4
+                      ? "zamówienia"
+                      : "zamówień"
+                  })`}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className="w-1/2 p-4">
+            <div className="bg-gray-200 p-4 rounded-md">
+              <h2 className="text-xl font-semibold mb-2 text-center">
+                Statystyki miesięczne
+              </h2>
+              <ul>
+                {monthlyStatistics.map((stat) => (
+                  <li key={stat._id} className="mb-2">{`${stat._id}: ${
+                    stat.totalAmount
+                  } zł (${stat.numberOfOrders} ${
+                    stat.numberOfOrders === 1
+                      ? "zamówienie"
+                      : stat.numberOfOrders >= 2 && stat.numberOfOrders <= 4
+                      ? "zamówienia"
+                      : "zamówień"
+                  })`}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div>Nie możesz uzyskać dostępu do statystyk...</div>
+          <div>Musisz się zalogować!</div>
+          <Link to="/login">
+            <button>Zaloguj się</button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

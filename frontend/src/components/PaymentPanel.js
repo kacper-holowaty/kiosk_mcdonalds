@@ -61,21 +61,25 @@ function PaymentPanel() {
         Podsumowanie zamówienia
       </h2>
       <div className="bg-gray-100 p-4 rounded-lg shadow-lg w-1/2 flex flex-col items-center justify-center">
-        <p>Rodzaj zamówienia: {takeout ? "Na wynos" : "Na miejscu"}</p>
-        <p>
-          Łączna cena zamówienia:{" "}
-          {price !== null ? `${price} zł` : "Trwa obliczanie ceny..."}
+        <p className="text-2xl">
+          Rodzaj zamówienia: {takeout ? "Na wynos" : "Na miejscu"}
         </p>
-        <div className="flex">
+        <p className="text-2xl my-3">
+          Łączna cena zamówienia:{" "}
+          <strong>
+            {price !== null ? `${price} zł` : "Trwa obliczanie ceny..."}
+          </strong>
+        </p>
+        <div className="flex mt-4">
           <button
             onClick={() => navigate("/start/menu/basket")}
-            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-blue-700 mr-4"
+            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-blue-700 mr-10 text-xl"
           >
             Powrót
           </button>
           <button
             onClick={() => handlePayment()}
-            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-green-700"
+            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-green-700 text-xl"
           >
             Zapłać
           </button>

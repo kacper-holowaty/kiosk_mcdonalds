@@ -31,9 +31,11 @@ function ThankYou() {
   }, [orderId, navigate]);
 
   return (
-    <div>
-      <h1>Dziękujemy za wizytę!</h1>
-      <div>Twój numer zamówienia: {orderNumber}</div>
+    <div className="min-h-screen flex flex-col items-center justify-center">
+      <h1 className="text-3xl font-semibold mb-4">Dziękujemy za wizytę!</h1>
+      <div className="text-5xl font-semibold">
+        Twój numer zamówienia: {orderNumber}
+      </div>
     </div>
   );
 }

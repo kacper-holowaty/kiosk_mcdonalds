@@ -3,7 +3,7 @@ import ChooseOrderType from "./ChooseOrderType";
 import StartScreen from "./StartScreen";
 import { Route, Routes } from "react-router-dom";
 import Menu from "./Menu";
-import LoginForm from "./LoginForm";
+import LoginForm from "./admin/LoginForm";
 import Basket from "./Basket";
 import PaymentPanel from "./PaymentPanel";
 import ThankYou from "./ThankYou";

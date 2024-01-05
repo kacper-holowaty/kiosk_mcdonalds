@@ -75,6 +75,7 @@ historyRoutes.route("/statistics/daily").get((req, res) => {
                 numberOfOrders: { $sum: 1 },
               },
             },
+            { $sort: { _id: 1 } },
           ])
           .toArray();
 
@@ -109,6 +110,7 @@ historyRoutes.route("/statistics/monthly").get((req, res) => {
                 numberOfOrders: { $sum: 1 },
               },
             },
+            { $sort: { _id: 1 } },
           ])
           .toArray();
 
