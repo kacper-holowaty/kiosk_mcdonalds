@@ -16,28 +16,44 @@ function EditProductInBasket({ item, stopEditing, onSubmit }) {
   };
 
   return (
-    <div>
-      <h3>Edytuj produkt: {item.name}</h3>
-      <div>
-        <label>Dodatkowe elementy:</label>
+    <div className="bg-white p-4 w-1/3 mb-2">
+      <h3 className="text-xl font-semibold mb-2">
+        Edytuj produkt: {item.name}
+      </h3>
+      <div className="mb-4">
+        <label className="block">Dodatkowe elementy:</label>
         <input
           type="text"
+          className="w-full border p-2"
           value={extraItems}
           onChange={(e) => setExtraItems(e.target.value)}
         />
       </div>
-      <div>
-        <label>Ilość:</label>
+      <div className="mb-4">
+        <label className="block">Ilość:</label>
         <input
           type="number"
+          className="w-full border p-2"
           value={quantity}
           onChange={(e) =>
             setQuantity(Math.max(1, parseInt(e.target.value, 10)))
           }
         />
       </div>
-      <button onClick={updateBasket}>Zaktualizuj element</button>
-      <button onClick={stopEditing}>Anuluj</button>
+      <div className="flex">
+        <button
+          onClick={updateBasket}
+          className="mr-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+        >
+          Zaktualizuj element
+        </button>
+        <button
+          onClick={stopEditing}
+          className="px-4 py-2 bg-red-500 text-white rounded-md"
+        >
+          Anuluj
+        </button>
+      </div>
     </div>
   );
 }

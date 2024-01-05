@@ -83,7 +83,6 @@ function Menu() {
         >
           <TiShoppingCart />
           Przejdź do koszyka
-          <TiShoppingCart />
         </button>
       )}
       <div className="w-full h-20"></div>

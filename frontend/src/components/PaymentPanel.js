@@ -56,15 +56,31 @@ function PaymentPanel() {
   };
 
   return (
-    <div>
-      <h2>Podsumowanie zamówienia</h2>
-      <p>Rodzaj zamówienia: {takeout ? "Na wynos" : "Na miejscu"}</p>
-      <p>
-        Łączna cena zamówienia:{" "}
-        {price !== null ? `${price} zł` : "Trwa obliczanie ceny..."}
-      </p>
-      <button onClick={() => navigate("/start/menu/basket")}>Powrót</button>
-      <button onClick={() => handlePayment()}>Zapłać</button>
+    <div className="flex flex-col items-center justify-center">
+      <h2 className="font-bold text-4xl text-center mx-auto mt-0 pt-8 mb-8">
+        Podsumowanie zamówienia
+      </h2>
+      <div className="bg-gray-100 p-4 rounded-lg shadow-lg w-1/2 flex flex-col items-center justify-center">
+        <p>Rodzaj zamówienia: {takeout ? "Na wynos" : "Na miejscu"}</p>
+        <p>
+          Łączna cena zamówienia:{" "}
+          {price !== null ? `${price} zł` : "Trwa obliczanie ceny..."}
+        </p>
+        <div className="flex">
+          <button
+            onClick={() => navigate("/start/menu/basket")}
+            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-blue-700 mr-4"
+          >
+            Powrót
+          </button>
+          <button
+            onClick={() => handlePayment()}
+            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-green-700"
+          >
+            Zapłać
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
