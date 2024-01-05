@@ -4,6 +4,7 @@ import { useAppContext } from "../context/AppContext";
 import axios from "axios";
 import CategoryList from "./CategoryList";
 import { FaArrowRight } from "react-icons/fa";
+import { TiShoppingCart } from "react-icons/ti";
 
 function Menu() {
   const { state } = useAppContext();
@@ -42,18 +43,18 @@ function Menu() {
   };
   return (
     <div>
-      {/* <button onClick={() => navigate("/start")}>Powrót</button> */}
+      <div className="flex">
+        <button
+          onClick={() => navigate("/start")}
+          className="fixed top-4 right-4 bg-red-500 hover:bg-red-700 px-6 py-3 text-white rounded-lg text-xl"
+        >
+          Powrót
+        </button>
 
-      <button
-        onClick={() => navigate("/start")}
-        className="fixed top-4 right-4 bg-red-500 hover:bg-red-700 px-6 py-3 text-white rounded-lg text-xl"
-      >
-        Powrót
-      </button>
-
-      <h1 className="text-center text-3xl mb-3 mt-3">
-        Wybierz, na co masz dziś ochotę...
-      </h1>
+        <h1 className="ml-4 text-3xl mb-3 mt-3">
+          Wybierz, na co masz dziś ochotę...
+        </h1>
+      </div>
       <div className="flex">
         <ul ref={firstTypeRef} className="w-1/4">
           {types.map((type) => (
@@ -71,13 +72,21 @@ function Menu() {
             </li>
           ))}
         </ul>
-        {selectedType && <CategoryList type={selectedType} />}
+        <div className="w-1/4">
+          {selectedType && <CategoryList type={selectedType} />}
+        </div>
       </div>
       {basket.length > 0 && (
-        <button onClick={() => navigate("/start/menu/basket")}>
+        <button
+          onClick={() => navigate("/start/menu/basket")}
+          className="flex fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 hover:bg-green-700 px-6 py-3 text-white rounded-lg text-xl items-center"
+        >
+          <TiShoppingCart />
           Przejdź do koszyka
+          <TiShoppingCart />
         </button>
       )}
+      <div className="w-full h-20"></div>
     </div>
   );
 }

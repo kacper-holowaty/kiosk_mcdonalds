@@ -20,6 +20,7 @@ function CategoryList({ type }) {
 
   return (
     <div>
+      <h3 className="uppercase ml-32 font-bold text-2xl">{type}:</h3>
       <ul>
         {products.map((item) => (
           <MenuItem key={item._id} item={item} />
