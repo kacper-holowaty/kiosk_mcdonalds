@@ -107,11 +107,15 @@ function AddProductForm() {
           </form>
         </div>
       ) : (
-        <div>
-          <div>Nie możesz jeszcze dodawać nowych produktów...</div>
-          <div>Musisz się zalogować!</div>
+        <div className="min-h-screen flex flex-col items-center justify-center">
+          <div className="text-2xl">
+            Nie możesz jeszcze dodawać nowych produktów...
+          </div>
+          <div className="text-2xl mb-4 mt-1">Musisz się zalogować!</div>
           <Link to="/login">
-            <button>Zaloguj się</button>
+            <button className="text-2xl bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg focus:outline-none">
+              Zaloguj się
+            </button>
           </Link>
         </div>
       )}

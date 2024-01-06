@@ -46,7 +46,7 @@ function Menu() {
       <div className="flex">
         <button
           onClick={() => navigate("/start")}
-          className="fixed top-4 right-4 bg-red-500 hover:bg-red-700 px-6 py-3 text-white rounded-lg text-xl"
+          className="fixed top-4 right-4 bg-mcdonalds hover:bg-red-700 px-6 py-3 text-white rounded-lg text-xl"
         >
           Powrót
         </button>
@@ -63,7 +63,7 @@ function Menu() {
               onClick={() => handleClick(type)}
               tabIndex={0}
               // uppercase w className psuje Refa (jak?)
-              className="p-6 bg-red-500 rounded-3xl mb-1 mt-1 ml-4 text-white flex justify-between items-center cursor-pointer hover:bg-red-700"
+              className="p-6 bg-mcdonalds rounded-3xl mb-1 mt-1 ml-4 text-white flex justify-between items-center cursor-pointer hover:bg-red-700"
             >
               <div className="text-2xl tracking-wide">{type}</div>{" "}
               <div>

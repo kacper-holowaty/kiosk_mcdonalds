@@ -107,40 +107,57 @@ function AdminMain() {
     nameFilter || categoryFilter ? filteredProducts : products;
 
   return (
-    <div>
+    <div className="pb-4">
       {isAdmin && <AdminPanel />}
       {isAdmin ? (
         <div>
-          <div>
-            <input
-              type="text"
-              placeholder="Wyszukaj produkt po nazwie"
-              value={nameFilter}
-              onChange={(e) => setNameFilter(e.target.value)}
-            />
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-            >
-              <option value="">Wybierz kategorię...</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
+          <div className="max-w-3xl mr-auto mt-4 ml-4 p-4 border rounded-lg shadow-lg bg-gray-300">
+            <div className="flex mb-4">
+              <input
+                type="text"
+                placeholder="Wyszukaj produkt po nazwie"
+                value={nameFilter}
+                onChange={(e) => setNameFilter(e.target.value)}
+                className="flex-grow px-2 py-1 border rounded-l-md"
+              />
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="px-2 py-1 border rounded-r-md"
+              >
+                <option value="">Wybierz kategorię...</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <ul className="space-y-4">
+              {displayedProducts.map((item) => (
+                <li
+                  key={item._id}
+                  className="flex items-center border-b-2 pb-1"
+                >
+                  <span className="flex-grow">
+                    {item.name} - {item.type} - {item.price} zł
+                  </span>
+                  <button
+                    onClick={() => setProduct(item)}
+                    className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2"
+                  >
+                    Edytuj
+                  </button>
+                  <button
+                    onClick={() => handleDeleteProduct(item._id)}
+                    className="px-3 py-1 bg-red-500 text-white rounded-md"
+                  >
+                    Usuń
+                  </button>
+                </li>
               ))}
-            </select>
+            </ul>
           </div>
-          <ul>
-            {displayedProducts.map((product) => (
-              <li key={product._id}>
-                {product.name} - {product.type} - {product.price} zł
-                <button onClick={() => setProduct(product)}>Edytuj</button>
-                <button onClick={() => handleDeleteProduct(product._id)}>
-                  Usuń
-                </button>
-              </li>
-            ))}
-          </ul>
           {product && (
             <EditForm
               editedProduct={product}
@@ -150,11 +167,13 @@ function AdminMain() {
           )}
         </div>
       ) : (
-        <div>
-          <div>Nie możesz jeszcze edytować danych...</div>
-          <div>Musisz się zalogować!</div>
+        <div className="min-h-screen flex flex-col items-center justify-center">
+          <div className="text-2xl">Nie możesz jeszcze edytować danych...</div>
+          <div className="text-2xl mb-4 mt-1">Musisz się zalogować!</div>
           <Link to="/login">
-            <button>Zaloguj się</button>
+            <button className="text-2xl bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg focus:outline-none">
+              Zaloguj się
+            </button>
           </Link>
         </div>
       )}

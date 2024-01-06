@@ -41,7 +41,7 @@ function StartScreen() {
       onClick={handleClick}
     >
       <Link to="/login">
-        <button className="fixed top-4 right-4 bg-red-500 hover:bg-red-700 px-6 py-3 text-white rounded-lg text-xl">
+        <button className="fixed top-4 right-4 bg-mcdonalds hover:bg-red-700 px-6 py-3 text-white rounded-lg text-xl">
           Zaloguj się
         </button>
       </Link>

@@ -8,7 +8,7 @@ function ChooseOrderType() {
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <Link to="/">
-        <button className="fixed top-4 right-4 bg-red-500 hover:bg-red-700 px-6 py-3 text-white rounded-lg text-xl">
+        <button className="fixed top-4 right-4 bg-mcdonalds hover:bg-red-700 px-6 py-3 text-white rounded-lg text-xl">
           Strona Główna
         </button>
       </Link>
@@ -17,7 +17,7 @@ function ChooseOrderType() {
         <Link
           to="menu"
           onClick={() => dispatch({ type: "EAT_IN" })}
-          className="flex flex-col items-center justify-center w-full bg-red-500 text-white p-14 rounded-lg shadow-md mb-4"
+          className="flex flex-col items-center justify-center w-full bg-mcdonalds text-white p-14 rounded-lg shadow-md mb-4"
         >
           <div className="mb-8">
             <FaHamburger size={200} />
@@ -27,7 +27,7 @@ function ChooseOrderType() {
         <Link
           to="menu"
           onClick={() => dispatch({ type: "TAKEOUT" })}
-          className="flex flex-col items-center justify-center w-full bg-red-500 text-white p-14 rounded-lg shadow-md mb-4"
+          className="flex flex-col items-center justify-center w-full bg-mcdonalds text-white p-14 rounded-lg shadow-md mb-4"
         >
           <div className="mb-8">
             <GiPaperBagFolded size={200} />

@@ -6,7 +6,7 @@ function MenuItem({ item }) {
 
   return (
     <div
-      className={`flex bg-red-500 bg-opacity-100 p-4 mt-1 mb-1 ml-2 items-center text-white rounded-lg ${
+      className={`flex bg-mcdonalds bg-opacity-100 p-4 mt-1 mb-1 ml-2 items-center text-white rounded-lg ${
         isEditing ? "flex-col" : "justify-between"
       }`}
     >
@@ -22,7 +22,7 @@ function MenuItem({ item }) {
       ) : (
         <button
           onClick={() => setIsEditing(true)}
-          className="bg-yellow-500 p-2 rounded-lg text-black"
+          className="bg-yellow-400 p-2 rounded-lg text-black"
         >
           Wybierz
         </button>

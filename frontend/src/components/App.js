@@ -7,10 +7,10 @@ import LoginForm from "./admin/LoginForm";
 import Basket from "./Basket";
 import PaymentPanel from "./PaymentPanel";
 import ThankYou from "./ThankYou";
-import AdminPanel from "./admin/AdminPanel";
 import AdminMain from "./admin/AdminMain";
 import Statistics from "./admin/Statistics";
 import AddProductForm from "./admin/AddProductForm";
+import NotFound from "./NotFound";
 
 function App() {
   return (
@@ -34,10 +34,10 @@ function App() {
           element={<ThankYou />}
         />
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/adminpanel" element={<AdminPanel />} />
         <Route path="/adminpanel/main" element={<AdminMain />} />
         <Route path="/adminpanel/add" element={<AddProductForm />} />
         <Route path="/adminpanel/statistics" element={<Statistics />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
