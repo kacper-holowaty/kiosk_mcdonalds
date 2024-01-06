@@ -39,11 +39,16 @@ function AddProductForm() {
     <div>
       {isAdmin && <AdminPanel />}
       {isAdmin ? (
-        <div>
-          <h2>Dodaj nowy produkt:</h2>
+        <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-md mt-4">
+          <h2 className="text-2xl font-semibold mb-4">Dodaj nowy produkt:</h2>
           <form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
-            <div>
-              <label htmlFor="name">Nazwa:</label>
+            <div className="mb-4">
+              <label
+                htmlFor="name"
+                className="block text-lg font-medium text-gray-600"
+              >
+                Nazwa:
+              </label>
               <input
                 type="text"
                 id="name"
@@ -51,14 +56,19 @@ function AddProductForm() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.name}
+                className="mt-1 p-2 border rounded-md w-full text-lg"
               />
               {formik.touched.name && formik.errors.name && (
                 <span style={{ color: "red" }}>{formik.errors.name}</span>
               )}
             </div>
-
-            <div>
-              <label htmlFor="type">Typ:</label>
+            <div className="mb-4">
+              <label
+                htmlFor="type"
+                className="block text-lg font-medium text-gray-600"
+              >
+                Typ:
+              </label>
               <input
                 type="text"
                 id="type"
@@ -66,14 +76,19 @@ function AddProductForm() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.type}
+                className="mt-1 p-2 border rounded-md w-full text-lg"
               />
               {formik.touched.type && formik.errors.type && (
                 <span style={{ color: "red" }}>{formik.errors.type}</span>
               )}
             </div>
-
-            <div>
-              <label htmlFor="price">Cena:</label>
+            <div className="mb-4">
+              <label
+                htmlFor="price"
+                className="block text-lg font-medium text-gray-600"
+              >
+                Cena:
+              </label>
               <input
                 type="number"
                 id="price"
@@ -94,15 +109,26 @@ function AddProductForm() {
                   formik.handleBlur(e);
                 }}
                 value={formik.values.price}
+                className="mt-1 p-2 border rounded-md w-full text-lg"
               />
               {formik.touched.price && formik.errors.price && (
                 <span style={{ color: "red" }}>{formik.errors.price}</span>
               )}
             </div>
 
-            <div>
-              <button type="submit">Dodaj produkt</button>
-              <button type="reset">Reset</button>
+            <div className="flex items-center justify-between">
+              <button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 rounded-md focus:outline-none"
+              >
+                Dodaj produkt
+              </button>
+              <button
+                type="reset"
+                className="bg-blue-500 text-white px-4 py-2 rounded-md focus:outline-none"
+              >
+                Reset
+              </button>
             </div>
           </form>
         </div>
