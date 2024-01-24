@@ -40,16 +40,18 @@ function LoginForm() {
           dispatch({ type: "LOGIN" });
           setLoginError("");
           alert("Zalogowano jako administrator!");
-        } else {
-          dispatch({ type: "LOGOUT" });
-          setLoginError("Nieprawidłowy login lub hasło. Spróbuj ponownie.");
         }
       } catch (error) {
         console.error("Nie udało się zalogować", error);
         dispatch({ type: "LOGOUT" });
-        setLoginError(
-          "Wystąpił błąd podczas logowania. Spróbuj ponownie później."
-        );
+
+        if (error.response.status === 401) {
+          setLoginError("Nieprawidłowy login lub hasło. Spróbuj ponownie.");
+        } else if (error.response.status === 500) {
+          setLoginError(
+            "Wystąpił błąd podczas logowania. Spróbuj ponownie później."
+          );
+        }
       }
     },
   });
