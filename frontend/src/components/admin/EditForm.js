@@ -9,11 +9,24 @@ function EditForm({ editedProduct, stopEditting, updateProduct }) {
       price: editedProduct ? editedProduct.price : 0,
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Nazwa produktu jest wymagana"),
-      type: Yup.string().required("Typ produktu jest wymagany"),
+      name: Yup.string()
+        .trim()
+        .matches(
+          /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 ]{2,}$/,
+          "Nieprawidłowa nazwa produktu"
+        )
+        .required("Nazwa produktu jest wymagana"),
+      type: Yup.string()
+        .trim()
+        .matches(
+          /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 ]{2,}$/,
+          "Nieprawidłowy typ produktu"
+        )
+        .required("Typ produktu jest wymagany"),
       price: Yup.number()
         .required("Cena produktu jest wymagana")
-        .min(0.01, "Cena musi być większa niż 0"),
+        .min(0.01, "Cena musi być większa niż 0")
+        .max(1000.01, "Cena może wynosić maksymalnie 1000"),
     }),
     onSubmit: async (values) => {
       updateProduct(editedProduct, values);

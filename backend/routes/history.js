@@ -2,10 +2,36 @@ const express = require("express");
 const historyRoutes = express.Router();
 const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
+const yup = require("yup");
+
+const addHistorySchema = yup.object().shape({
+  order: yup.array().min(1).required(),
+  takeout: yup.boolean().required(),
+  totalAmount: yup
+    .string()
+    .matches(/^\d+\.\d{2}$/)
+    .required(),
+  date: yup.date().required(),
+  orderNumber: yup
+    .string()
+    .matches(/^0\d{2}$/)
+    .required(),
+});
 
 historyRoutes.route("/history/add").post(async (req, res) => {
   try {
     const { order, takeout, totalAmount, orderNumber, orderId } = req.body;
+
+    await addHistorySchema.validate(
+      {
+        order,
+        takeout,
+        totalAmount,
+        date: new Date(),
+        orderNumber,
+      },
+      { abortEarly: false }
+    );
 
     const data = {
       _id: ObjectId(orderId),
@@ -69,7 +95,7 @@ historyRoutes.route("/statistics/daily").get((req, res) => {
             {
               $group: {
                 _id: {
-                  $dateToString: { format: "%d.%m.%Y", date: "$date" },
+                  $dateToString: { format: "%Y-%m-%d", date: "$date" },
                 },
                 totalAmount: { $sum: { $toDouble: "$totalAmount" } },
                 numberOfOrders: { $sum: 1 },
@@ -78,6 +104,10 @@ historyRoutes.route("/statistics/daily").get((req, res) => {
             { $sort: { _id: 1 } },
           ])
           .toArray();
+
+        dailyStatistics.forEach((stat) => {
+          stat.totalAmount = parseFloat(stat.totalAmount.toFixed(2));
+        });
 
         resolve(dailyStatistics);
       } catch (error) {
@@ -104,7 +134,7 @@ historyRoutes.route("/statistics/monthly").get((req, res) => {
             {
               $group: {
                 _id: {
-                  $dateToString: { format: "%m.%Y", date: "$date" },
+                  $dateToString: { format: "%Y-%m", date: "$date" },
                 },
                 totalAmount: { $sum: { $toDouble: "$totalAmount" } },
                 numberOfOrders: { $sum: 1 },
@@ -113,6 +143,10 @@ historyRoutes.route("/statistics/monthly").get((req, res) => {
             { $sort: { _id: 1 } },
           ])
           .toArray();
+
+        monthlyStatistics.forEach((stat) => {
+          stat.totalAmount = parseFloat(stat.totalAmount.toFixed(2));
+        });
 
         resolve(monthlyStatistics);
       } catch (error) {

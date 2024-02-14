@@ -37,12 +37,21 @@ function Statistics() {
               </h2>
               <ul>
                 {dailyStatistics.map((stat) => (
-                  <li key={stat._id} className="mb-1">{`${stat._id}: ${
-                    stat.totalAmount
-                  } zł (${stat.numberOfOrders} ${
+                  <li key={stat._id} className="mb-1">{`${
+                    stat._id
+                  }: ${stat.totalAmount.toFixed(2)} zł (${
+                    stat.numberOfOrders
+                  } ${
                     stat.numberOfOrders === 1
                       ? "zamówienie"
-                      : stat.numberOfOrders >= 2 && stat.numberOfOrders <= 4
+                      : stat.numberOfOrders % 10 === 2 &&
+                        stat.numberOfOrders % 100 !== 12
+                      ? "zamówienia"
+                      : stat.numberOfOrders % 10 === 3 &&
+                        stat.numberOfOrders % 100 !== 13
+                      ? "zamówienia"
+                      : stat.numberOfOrders % 10 === 4 &&
+                        stat.numberOfOrders % 100 !== 14
                       ? "zamówienia"
                       : "zamówień"
                   })`}</li>
@@ -57,12 +66,21 @@ function Statistics() {
               </h2>
               <ul>
                 {monthlyStatistics.map((stat) => (
-                  <li key={stat._id} className="mb-2">{`${stat._id}: ${
-                    stat.totalAmount
-                  } zł (${stat.numberOfOrders} ${
+                  <li key={stat._id} className="mb-2">{`${
+                    stat._id
+                  }: ${stat.totalAmount.toFixed(2)} zł (${
+                    stat.numberOfOrders
+                  } ${
                     stat.numberOfOrders === 1
                       ? "zamówienie"
-                      : stat.numberOfOrders >= 2 && stat.numberOfOrders <= 4
+                      : stat.numberOfOrders % 10 === 2 &&
+                        stat.numberOfOrders % 100 !== 12
+                      ? "zamówienia"
+                      : stat.numberOfOrders % 10 === 3 &&
+                        stat.numberOfOrders % 100 !== 13
+                      ? "zamówienia"
+                      : stat.numberOfOrders % 10 === 4 &&
+                        stat.numberOfOrders % 100 !== 14
                       ? "zamówienia"
                       : "zamówień"
                   })`}</li>

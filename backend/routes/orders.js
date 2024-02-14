@@ -7,6 +7,19 @@ orderRoutes.route("/orders").post(async (req, res) => {
   try {
     const { order, takeout } = req.body;
 
+    if (takeout === null) {
+      return res
+        .status(400)
+        .json({
+          error:
+            "Musisz wybrać, czy zamówienie ma być na miejscu czy na wynos.",
+        });
+    }
+
+    if (!Array.isArray(order) || order.length === 0) {
+      return res.status(400).json({ error: "Zamówienie nie może być puste!" });
+    }
+
     const newOrder = order.map((item) => ({
       ...item,
       extraItems: Array.isArray(item.extraItems)

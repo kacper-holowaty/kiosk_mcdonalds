@@ -15,7 +15,7 @@ function EditProduct({ item, stopEditing }) {
 
     dispatch({ type: "ADD_TO_BASKET", payload: editedItem });
     stopEditing();
-    alert(`Dodano ${editedItem.name} x${editedItem.quantity} do koszyka!`);
+    // alert(`Dodano ${editedItem.name} x${editedItem.quantity} do koszyka!`);
   };
 
   return (
@@ -39,9 +39,12 @@ function EditProduct({ item, stopEditing }) {
           type="number"
           className="mt-1 p-2 border rounded-md w-full text-black"
           value={quantity}
-          onChange={(e) =>
-            setQuantity(Math.max(1, parseInt(e.target.value, 10)))
-          }
+          onChange={(e) => {
+            const value = parseInt(e.target.value, 10);
+            if (!isNaN(value) && value >= 1 && value <= 50) {
+              setQuantity(value);
+            }
+          }}
         />
       </div>
       <div className="flex space-x-4">

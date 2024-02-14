@@ -35,9 +35,12 @@ function EditProductInBasket({ item, stopEditing, onSubmit }) {
           type="number"
           className="w-full border p-2"
           value={quantity}
-          onChange={(e) =>
-            setQuantity(Math.max(1, parseInt(e.target.value, 10)))
-          }
+          onChange={(e) => {
+            const value = parseInt(e.target.value, 10);
+            if (!isNaN(value) && value >= 1 && value <= 50) {
+              setQuantity(value);
+            }
+          }}
         />
       </div>
       <div className="flex">
