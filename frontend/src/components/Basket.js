@@ -40,7 +40,7 @@ function Basket() {
         takeout,
       };
 
-      const response = await axios.post("http://localhost:5000/orders", data);
+      const response = await axios.post("http://localhost:32001/orders", data);
       const orderId = response.data.orderId;
 
       navigate(`/start/menu/basket/payment/${orderId}`);

@@ -37,7 +37,7 @@ function AdminMenu() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/categories");
+        const response = await axios.get("http://localhost:32001/categories");
         setCategories(response.data);
       } catch (error) {
         console.error("Błąd podczas pobierania kategorii:", error);
@@ -49,16 +49,16 @@ function AdminMenu() {
 
   const handleDeleteProduct = async (productId) => {
     try {
-      await axios.delete(`http://localhost:5000/products/${productId}`);
+      await axios.delete(`http://localhost:32001/products/${productId}`);
 
       const responseAllProducts = await axios.get(
-        "http://localhost:5000/products"
+        "http://localhost:32001/products"
       );
       dispatch({ type: "SET_PRODUCTS", payload: responseAllProducts.data });
 
       if (nameFilter || categoryFilter) {
         const response = await axios.get(
-          "http://localhost:5000/admin/products",
+          "http://localhost:32001/admin/products",
           {
             params: {
               name: nameFilter,
@@ -76,16 +76,16 @@ function AdminMenu() {
   const handleUpdateProduct = async (updatedProduct, values) => {
     try {
       const productId = updatedProduct._id;
-      await axios.put(`http://localhost:5000/products/${productId}`, values);
+      await axios.put(`http://localhost:32001/products/${productId}`, values);
 
       const responseAllProducts = await axios.get(
-        "http://localhost:5000/products"
+        "http://localhost:32001/products"
       );
       dispatch({ type: "SET_PRODUCTS", payload: responseAllProducts.data });
 
       if (nameFilter || categoryFilter) {
         const response = await axios.get(
-          "http://localhost:5000/admin/products",
+          "http://localhost:32001/admin/products",
           {
             params: {
               name: nameFilter,

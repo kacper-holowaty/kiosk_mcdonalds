@@ -14,7 +14,7 @@ function PaymentPanel() {
     const getTotalPrice = () => {
       return new Promise((resolve, reject) => {
         axios
-          .get(`http://localhost:5000/orders/totalprice/${orderId}`)
+          .get(`http://localhost:32001/orders/totalprice/${orderId}`)
           .then((response) => {
             resolve(response.data.totalAmount);
           })
@@ -34,11 +34,13 @@ function PaymentPanel() {
 
   const handlePayment = async () => {
     try {
-      await axios.delete(`http://localhost:5000/orders/delete/${orderId}`);
+      await axios.delete(`http://localhost:32001/orders/delete/${orderId}`);
 
-      const response = await axios.get("http://localhost:5000/orders/generate");
+      const response = await axios.get(
+        "http://localhost:32001/orders/generate"
+      );
 
-      await axios.post("http://localhost:5000/history/add", {
+      await axios.post("http://localhost:32001/history/add", {
         order: basket,
         takeout,
         totalAmount: price,

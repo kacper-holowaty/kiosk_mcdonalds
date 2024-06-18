@@ -14,7 +14,7 @@ function ThankYou() {
         }
 
         const response = await axios.get(
-          `http://localhost:5000/history/getOrderNumber/${orderId}`
+          `http://localhost:32001/history/getOrderNumber/${orderId}`
         );
 
         setOrderNumber(response.data.orderNumber);

@@ -8,7 +8,7 @@ function CategoryList({ type }) {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/products/${type}`
+          `http://localhost:32001/products/${type}`
         );
         setProducts(response.data);
       } catch (error) {

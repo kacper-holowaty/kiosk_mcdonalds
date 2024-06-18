@@ -11,14 +11,14 @@ function Statistics() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/statistics/daily")
+      .get("http://localhost:32001/statistics/daily")
       .then((response) => setDailyStatistics(response.data))
       .catch((error) =>
         console.error("Błąd podczas pobierania statystyk dziennych:", error)
       );
 
     axios
-      .get("http://localhost:5000/statistics/monthly")
+      .get("http://localhost:32001/statistics/monthly")
       .then((response) => setMonthlyStatistics(response.data))
       .catch((error) =>
         console.error("Błąd podczas pobierania statystyk miesięcznych:", error)

@@ -38,9 +38,9 @@ function AddProductForm() {
     }),
     onSubmit: async (values) => {
       try {
-        await axios.post("http://localhost:5000/products", values);
+        await axios.post("http://localhost:32001/products", values);
 
-        const response = await axios.get("http://localhost:5000/products");
+        const response = await axios.get("http://localhost:32001/products");
         dispatch({ type: "SET_PRODUCTS", payload: response.data });
         alert("Dodano nowy produkt!");
         navigate("/adminpanel/main");

@@ -19,7 +19,7 @@ function Menu() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/categories");
+        const response = await axios.get("http://localhost:32001/categories");
         setTypes(response.data);
         firstTypeRef.current && firstTypeRef.current.focus();
       } catch (error) {

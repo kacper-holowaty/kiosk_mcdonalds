@@ -8,7 +8,6 @@ app.use(express.json());
 app.use(require("./routes/products"));
 app.use(require("./routes/orders"));
 app.use(require("./routes/history"));
-// app.use(require("./routes/admin"));
 app.use(express.urlencoded({ extended: true }));
 const dbo = require("./db/conn");
 
