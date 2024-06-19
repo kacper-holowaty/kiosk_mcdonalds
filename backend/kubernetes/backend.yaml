@@ -17,6 +17,9 @@ spec:
           image: kacperholowaty/backend_maczek:latest
           ports:
             - containerPort: 5000
+          env:
+            - name: MONGO_URI
+              value: "mongodb://mongodb-service:27017/mcdonalds"
 
 ---
 apiVersion: v1
