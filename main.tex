@@ -5,14 +5,14 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[top=1in, bottom=1.5in, left=1.25in, right=1.25in]{geometry}
-
+\usepackage{minted}
 \usepackage{subfig}
 \usepackage{multirow}
 \usepackage{multicol}
 \graphicspath{{Imagens/}}
 \usepackage{xcolor,colortbl}
 \usepackage{float}
-
+\usepackage[T1]{fontenc}
 \newcommand \comment[1]{\textbf{\textcolor{red}{#1}}}
 
 %\usepackage{float}
@@ -85,17 +85,17 @@
 \rhead{\hmwkAuthorName} % Top left header
 \lhead{\hmwkClass: \hmwkTitle} % Top center header
 \rhead{\firstxmark} % Top right header
-\lfoot{Jan Kowalski} % Bottom left footer
+\lfoot{Kacper Hołowaty} % Bottom left footer
 \cfoot{} % Bottom center footer
 \rfoot{} % Bottom right footer
 \renewcommand{\headrulewidth}{1pt}
 \renewcommand{\footrulewidth}{1pt}
 
     
-\newcommand{\hmwkTitle}{Tytuł projektu z technologii chmurowych} % Tytuł projektu
-\newcommand{\hmwkDueDate}{\today} % Data 
-\newcommand{\hmwkClass}{Technologie chmurowe} % Nazwa przedmiotu
-\newcommand{\hmwkAuthorName}{Jan Kowalski} % Imię i nazwisko
+\newcommand{\hmwkTitle}{Aplikacja do składania zamówień - kiosk McDonald's} 
+\newcommand{\hmwkDueDate}{\today}
+\newcommand{\hmwkClass}{Technologie chmurowe}
+\newcommand{\hmwkAuthorName}{Kacper Hołowaty}
 
 % trabalho 
 \begin{document}
@@ -136,55 +136,98 @@
 \section{Opis projektu}
 \label{sec:Project}
 
-Tutaj wypisujemy szczegółowe informacje o celu powstania projektu (jakaś historyjka, że pewna firma/osoba potrzebuje bazy, która ...)
+Pewna mała restaturacja, sprzedająca fast foody, zauważyła, że w związku z tym, że konkurencja wprowadziła do swoich restaturacji interaktywne ekrany, umożliwiające klientom składanie zamówień bez potrzeby podchodzenia do kas i rozmawiania z kimkolwiek z pracowników, to spadły im wyniki sprzedażowe. Nie chcieli więc pozostać w tyle, bo pomimo niekiedy lepszego jedzenia, często klienci omijali ich restaurację z uwagi właśnie na brak możliwości zamówienia jedzenia w aplikacji. 
+
+Dlatego też powstała aplikacja do składania zamówień - kiosk McDonald's. Klienci mogą, po kliknięciu w ekran wybrać jaki produkt chcą zamówić, wybrać ilość i jakie dodatkowe składniki mają być dodane do ich zamówienia. Mogą oni następnie przejść do koszyka i edytować tam swoje zamówienie oraz ostatecznie zapłacić, po czym otrzymają oni paragon i numer swojego zamówienia.
+
+Pracownicy restauracji, po uprzednim zalogowaniu się w panelu administratora, mogą przejrzeć statystyki sprzedaży z podziałem na dzień i miesiąc. Natomiast administrator może dodatkowo edytować produkty dostępne w menu.
 
 \subsection{Opis architektury - 8 pkt}
 \label{sec:introduction}
-Powinna zawierać opis architektury aplikacji opartej na Kubernetes, w tym opis klastrowego systemu zarządzania kontenerami, wykorzystanych modułów i komponentów
+Aplikacja posiada cztery podstawowe serwisy: interfejs użytkownika (frontend), serwer aplikacji (backend), bazę danych oraz serwis Keycloak, zarządzający dostępem w aplikacji.
+
+Aplikacja jest hostowana na klastrze Kubernetes, co zapewnia jej niezawodność. Interfejs użytkownika jest dostępny pod adresem \textbf{http://localhost:32000} w przeglądarce internetowej. Serwer aplikacji komunikuje się z bazą danych MongoDB i obsługuje rozmaite żądania CRUD od użytkowników. Keycloak natomiast, za zadanie ma chronić nieupoważnionych użytkowników przed dostępem do panelu administracyjnego aplikacji. 
 
 
 \subsection{Opis infrastruktury - 6 pkt}
 \label{sec:Users}
 
-Powinien zawierać informacje na temat środowiska, w którym aplikacja będzie działać, a także wykorzystanych narzędzi i platformy chmurowe. Ważne jest również zwrócenie uwagi na wykorzystanie zasobów, takich jak sieci i pamięci masowej.
+Używam klastra Kubernetes w wersji v1.29.2 uruchomionego w Docker Desktop.
+
 
 \subsection{Opis komponentów aplikacji - 8 pkt}
 \label{sec:FunctionalConditions}
+Aplikacja składa się z następujących komponentów:
 
-Powinna zawierać informacje na temat komponentów aplikacji, takich jak serwisy, aplikacje i bazy danych. W szczególności należy zwrócić uwagę na sposoby ich wdrażania, konfiguracji i zarządzania.
+\begin{itemize}
+\item \textbf{Frontend:} Interfejs użytkownika został stworzony przy użyciu frameworka React.js. Korzysta z backendu, wysyłając różne żądania.
+
+\item \textbf{Backend:} Backend został zbudowany za pomocą Express.js. Komunikuje się z bazą danych MongoDB, która jest hostowana lokalnie.
+
+\item \textbf{Baza danych:} Wykorzystywana jest baza MongoDB. Przechowywane są w niej informacje o produktach dostępnych w McDonald's, ale także historia wszystkich zamówień, co umożliwia stworzenie statystyk. Baza przechowywana jest na stałym woluminie Persistent Volume, co zapewnia trwałość danych.
+
+\item \textbf{Keycloak:} Keycloak został uruchomiony przy pomocy klastra Kubernetes, a jego konfiguracja zapisana jest na stałym woluminie. W mojej aplikacji posłużył do zabezpieczenia frontendu, gdzie za zadanie miał chronić panel administracyjny przed dostępem dla niektórych użytkowników.
+\end{itemize}
+
 
 \subsection{Konfiguracja i zarządzanie - 4 pkt}
 \label{sec:NonFunctionalConditions}
 
-Powinna zawierać informacje na temat konfiguracji i zarządzania aplikacją na poziomie klastra Kubernetes.
+Konfiguracja i zarządzanie odbywa się za pomocą:
+
+\begin{itemize}
+\item \textbf{Deploymenty:} Każdy komponent aplikacji (frontend, backend, Keycloak, baza danych MongoDB) jest uruchamiany jako osobny Deployment w Kubernetes. Deploymenty pozwalają na łatwe skalowanie i aktualizację komponentów aplikacji.
+
+\item \textbf{Serwisy:} Komunikacja między komponentami aplikacji jest zarządzana za pomocą serwisów Kubernetes, które zapewniają odkrywanie i balansowanie obciążenia. W utworzonym przeze mnie klastrze posiadam łącznie uruchomione cztery serwisy (frontend, backend, MongoDB oraz Keycloak).
+
+\item \textbf{Persistent Volume Claims:} Dane z bazy MongoDB oraz konfiguracja Keycloak'a są przechowywane na Persistent Volume za pomocą Persistent Volume Claim. Zapewniona jest w ten sposób trwałość danych.
+\end{itemize}
+
 
 \subsection{Zarządzanie błędami - 2 pkt}
 \label{sec:ERD} 
 
-Powinna zawierać informacje na temat sposobów zarządzania błędami aplikacji oraz sposobów monitorowania i reagowania na awarie.
+{\noindent\medium\textbf{Na poziomie aplikacji}}
+
+Na frontendzie i backendzie korzystam z konstrukcji: try catch oraz promisów do przechwytywania i obsługi błędów. W przypadku nieoczekiwanych błędów, aplikacja wciąż ma prawo działać.
+
+{\noindent\medium\textbf{Na poziomie infrastruktury}}
+
+W konfiguracji Deployment dla backendu, korzystam z mechanizmu replikacji Kubernetes. Dzięki temu, jeśli któryś z podów aplikacji wyrzuci błąd i przestanie działać, to Kubernetes automatycznie stworzy nowego poda i przekieruje do niego ruch.
+
 
 
 \subsection{Skalowalność - 4 pkt}
 \label{sec:ExamplesSection}
 
-Skalowalność jest kluczowa w architekturze aplikacji opartej na Kubernetes. Należy opisać, jak aplikacja może być skalowana, w jaki sposób skalowanie jest monitorowane i jakie narzędzia są wykorzystywane w tym celu.
+\noindent Skalowalność jest kluczowa w architekturze aplikacji opartej na Kubernetes. 
+Aplikacja może być skalowana zarówno horyzontalnie jak i wertykalnie.
+
+{\noindent\medium\textbf{Skalowanie horyzontalne}}
+
+Polega ono na zmianie liczby replik (instancji) podów na podstawie obciążenia CPU lub innych zdefiniowanych metryk. Konfiguracja jest oparta na metrykach, takich jak średnie zużycie CPU lub niestandardowe metryki dostarczone przez aplikację.
+
+{\noindent\medium\textbf{Skalowanie wertykalne}}
+
+Polega ono na dostosowaniu rozmiaru zasobów (CPU, pamięć) przypisanych do pojedynczych podów na podstawie rzeczywistego zużycia tych zasobów. Pomaga zminimalizować marnowanie zasobów poprzez dokładne dopasowanie zasobów do potrzeb aplikacji.
 
 \subsection{Wymagania dotyczące zasobów - 2 pkt}
 \label{sec:ExampleTables}
 
-Powinna zawierać informacje na temat wymagań dotyczących zasobów dla każdego komponentu aplikacji, takie jak ilość pamięci RAM, CPU, miejsce na dysku, itp. Należy również opisać, jakie są oczekiwania dotyczące wydajności i czasu odpowiedzi dla aplikacji.
+\begin{itemize}
+\item \textbf{Backend:} 500MB pamięci RAM, 0.2 rdzenia CPU
+
+\item \textbf{MongoDB:} Persistent Volume Claim dla bazy danych żądą minimum 5GB przestrzeni dyskowej.
+
+\item \textbf{Keycloak:} Persistent Volume Claim dla Keycloaka żądą minimum 1GB przestrzeni dyskowej.
+
+\end{itemize}
 
 
 \subsection{Architektura sieciowa - 4 pkt}
 \label{sec:ExampleResults}
 
-powinna zawierać informacje na temat architektury sieciowej aplikacji, w tym sposobu konfiguracji sieci w klastrze Kubernetes, wykorzystywanych protokołów i narzędzi do zarządzania siecią.
-
-\noindent
-\textbf{Każdy odnośnik, który znajdzie się w literaturze musi mieć swoje odwołanie w projekcie. - 2 pkt} 
-
-\bibliographystyle{amsplain}
-\bibliography{references.bib}
-\nocite{*}
+Po uruchomieniu klastra Kubernetes, architektura sieciowa wygląda następująco:
+frontend działa w przeglądarce pod adresem \textbf{http://localhost:32000}, backend, który bezpośrednio komunikuje się z bazą MongoDB, no i jest swego rodzaju API dla frontendu, działa pod adresem \textbf{http://localhost:32001}. Keycloak dostępny jest natomiast pod adresem \textbf{http://localhost:32002}. Do komunikacji frontendu z backendem użyty został protokół HTTP. Do autoryzacji używany jest OAuth2 z Keycloakiem. 
 
 \end{document}

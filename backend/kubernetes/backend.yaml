@@ -15,6 +15,10 @@ spec:
       containers:
         - name: backend
           image: kacperholowaty/backend_maczek:latest
+          resources:
+            limits:
+              cpu: "200m"
+              memory: "500Mi"
           ports:
             - containerPort: 5000
           env:
