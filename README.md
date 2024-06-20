@@ -22,7 +22,7 @@ Jeśli chcesz zakończyć pracę z aplikacją wykonaj polecenia:
 ### Opis projektu:
 
 Jest to rozszerzenie projektu z 3 semestru, czyli aplikacji do składania zamówień - kiosk McDonalds.
-Projekt posiada łącznie 4 serwisy: Frontend - stworzony przy użycie React.js, Backend - stworzony przy użyciu Express.js, bazę danych MongoDB oraz Keycloak.js. Aplikacja umożliwia użytkownikowi (bez logowania) jedynie składanie zamówień. Aplikacja posiada też panel administratora, gdzie po zalogowaniu jako użytkownik z przypisaną rolą **admin** można edytować produkty dostępne w kiosku. Do logowania używam Keycloaka.
+Projekt posiada łącznie 4 serwisy: Frontend - stworzony przy użyciu React.js, Backend - stworzony przy użyciu Express.js, bazę danych MongoDB oraz Keycloak.js. Aplikacja umożliwia użytkownikowi (bez logowania) jedynie składanie zamówień. Aplikacja posiada też panel administratora, gdzie po zalogowaniu jako użytkownik z przypisaną rolą **admin** można edytować produkty dostępne w kiosku. Do logowania używam Keycloaka.
 
 #### Moja konfiguracja Keycloaka:
 
