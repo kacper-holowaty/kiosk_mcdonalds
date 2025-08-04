@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL
+
 function ThankYou() {
   const { orderId } = useParams();
   const navigate = useNavigate();
@@ -14,7 +16,7 @@ function ThankYou() {
         }
 
         const response = await axios.get(
-          `http://localhost:32001/history/getOrderNumber/${orderId}`
+          `${backendUrl}/history/getOrderNumber/${orderId}`
         );
 
         setOrderNumber(response.data.orderNumber);

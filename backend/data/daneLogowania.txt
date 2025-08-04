@@ -1,8 +1,0 @@
-"login": "admininstrator",
-"password": "mcdonalds"
-
-"login": "pracownik1",
-"password": "password"
-
-"login": "pracownik2",
-"password": "password"

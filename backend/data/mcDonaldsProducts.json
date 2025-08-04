@@ -2,466 +2,517 @@
   {
     "name": "Big Mac",
     "type": "burgery",
-    "price": "22.99"
+    "price": "23.80",
+    "imageFile": "bigmac.png"
+  },
+  {
+    "name": "Café Latte",
+    "type": ["McCafé", "napoje"],
+    "price": "13.40",
+    "imageFile": "cafe_latte.png"
+  },
+  {
+    "name": "Cappucino",
+    "type": ["McCafé", "napoje"],
+    "price": "8.60",
+    "imageFile": "cappucino.png"
+  },
+  {
+    "name": "Caramel Latte Macchiato",
+    "type": ["McCafé", "napoje"],
+    "price": "16.90",
+    "imageFile": "caramel_latte_macchiato.png"
   },
   {
     "name": "Cheeseburger",
     "type": "burgery",
-    "price": "12.99"
+    "price": "7.50",
+    "imageFile": "cheeseburger.png"
   },
   {
-    "name": "McChicken",
-    "type": "kanapki",
-    "price": "15.99"
+    "name": "Chikker",
+    "type": "burgery",
+    "price": "7.40",
+    "imageFile": "chikker.png"
   },
   {
-    "name": "Filet-O-Fish",
-    "type": "kanapki",
-    "price": "18.99"
+    "name": "Chrupiące marcheweczki",
+    "type": "frytki i dodatki",
+    "price": "5.20",
+    "imageFile": "chrupiace_marcheweczki.png"
   },
   {
-    "name": "McWrap",
-    "type": "wrapy",
-    "price": "17.49"
-  },
-  {
-    "name": "Chicken McNuggets (6 szt.)",
-    "type": "kurczaki",
-    "price": "8.49"
-  },
-  {
-    "name": "Chicken McNuggets (9 szt.)",
-    "type": "kurczaki",
-    "price": "12.99"
-  },
-  {
-    "name": "Chicken McNuggets (20 szt.)",
-    "type": "kurczaki",
-    "price": "23.99"
-  },
-  {
-    "name": "Skrzydełka Ostre",
-    "type": "kurczaki",
-    "price": "14.99"
-  },
-  {
-    "name": "Skrzydełka Łagodne",
-    "type": "kurczaki",
-    "price": "14.99"
-  },
-  {
-    "name": "McFlurry Oreo",
-    "type": "desery",
-    "price": "12.99"
-  },
-  {
-    "name": "Sundae Karmelowe",
-    "type": "desery",
-    "price": "8.99"
-  },
-  {
-    "name": "McSzarlotka",
-    "type": "desery",
-    "price": "14.99"
+    "name": "Coca-Cola Zero",
+    "type": "napoje",
+    "price": "8.00",
+    "imageFile": "cocacola_zero.png"
   },
   {
     "name": "Coca-Cola",
     "type": "napoje",
-    "price": "5.99"
+    "price": "8.00",
+    "imageFile": "cocacola.png"
+  },
+  {
+    "name": "Espresso",
+    "type": ["McCafé", "napoje"],
+    "price": "7.60",
+    "imageFile": "espresso.png"
   },
   {
     "name": "Fanta",
     "type": "napoje",
-    "price": "5.99"
+    "price": "8.00",
+    "imageFile": "fanta.png"
+  },
+  {
+    "name": "Flat white",
+    "type": ["McCafé", "napoje"],
+    "price": "13.40",
+    "imageFile": "flat_white.png"
+  },
+  {
+    "name": "Frytki duże",
+    "type": "frytki i dodatki",
+    "price": "7.20",
+    "imageFile": "frytki_duze.png"
+  },
+  {
+    "name": "Frytki małe",
+    "type": "frytki i dodatki",
+    "price": "5.40",
+    "imageFile": "frytki_male.png"
+  },
+  {
+    "name": "Hamburger",
+    "type": "burgery",
+    "price": "6.90",
+    "imageFile": "hamburger.png"
+  },
+  {
+    "name": "Herbata",
+    "type": ["McCafé", "napoje"],
+    "price": "10.90",
+    "imageFile": "herbata.png"
+  },
+  {
+    "name": "Iced Caramel Latte",
+    "type": ["McCafé", "napoje"],
+    "price": "17.20",
+    "imageFile": "iced_caramel_latte.png"
+  },
+  {
+    "name": "Iced Latte",
+    "type": ["McCafé", "napoje"],
+    "price": "15.70",
+    "imageFile": "iced_latte.png"
+  },
+  {
+    "name": "Jalapeño Burger",
+    "type": "burgery",
+    "price": "7.50",
+    "imageFile": "jalapeno_burger.png"
+  },
+  {
+    "name": "Kawa czarna",
+    "type": ["McCafé", "napoje"],
+    "price": "9.70",
+    "imageFile": "kawa_czarna.png"
+  },
+  {
+    "name": "Kawa z mlekiem",
+    "type": ["McCafé", "napoje"],
+    "price": "10.70",
+    "imageFile": "kawa_z_mlekiem.png"
+  },
+  {
+    "name": "Ketchup",
+    "type": "sosy",
+    "price": "0.60",
+    "imageFile": "ketchup.png"
+  },
+  {
+    "name": "Kubuś Mus",
+    "type": "frytki i dodatki",
+    "price": "5.60",
+    "imageFile": "kubus_mus.png"
+  },
+  {
+    "name": "Lipton Ice Tea Lemon",
+    "type": "napoje",
+    "price": "8.00",
+    "imageFile": "lipton_icetea_lemon.png"
+  },
+  {
+    "name": "Lody o smaku waniliowym z polewą czekoladową",
+    "type": "desery",
+    "price": "11.40",
+    "imageFile": "lody_waniliowe_czekolada.png"
+  },
+  {
+    "name": "Lody o smaku waniliowym z polewą karmelową",
+    "type": "desery",
+    "price": "11.40",
+    "imageFile": "lody_waniliowe_karmelowe.png"
+  },
+  {
+    "name": "Lody o smaku waniliowym z polewą truskawkową",
+    "type": "desery",
+    "price": "11.40",
+    "imageFile": "lody_waniliowe_truskawka.png"
+  },
+  {
+    "name": "McChicken",
+    "type": "burgery",
+    "price": "19.80",
+    "imageFile": "mcchicken.png"
+  },
+  {
+    "name": "McCrispy Bacon Supreme",
+    "type": "burgery",
+    "price": "25.90",
+    "imageFile": "mccrispy_bacon_supreme.png"
+  },
+  {
+    "name": "McCrispy",
+    "type": "burgery",
+    "price": "21.90",
+    "imageFile": "mccrispy.png"
+  },
+  {
+    "name": "McDouble",
+    "type": "burgery",
+    "price": "11.30",
+    "imageFile": "mcdouble.png"
+  },
+  {
+    "name": "McFlurry o smaku waniliowym KitKat z polewą czekoladową",
+    "type": "desery",
+    "price": "12.00",
+    "imageFile": "mcflurry_kitkat_czekolada.png"
+  },
+  {
+    "name": "McFlurry o smaku waniliowym KitKat z polewą karmelową",
+    "type": "desery",
+    "price": "12.00",
+    "imageFile": "mcflurry_kitkat_karmelowe.png"
+  },
+  {
+    "name": "McFlurry o smaku waniliowym KitKat z polewą truskawkową",
+    "type": "desery",
+    "price": "12.00",
+    "imageFile": "mcflurry_kitkat_truskawka.png"
+  },
+  {
+    "name": "McFlurry o smaku waniliowym KitKat",
+    "type": "desery",
+    "price": "11.80",
+    "imageFile": "mcflurry_kitkat.png"
+  },
+  {
+    "name": "McFlurry o smaku waniliowym Lion z polewą czekoladową",
+    "type": "desery",
+    "price": "12.00",
+    "imageFile": "mcflurry_lion_czekolada.png"
+  },
+  {
+    "name": "McFlurry o smaku waniliowym Lion z polewą karmelową",
+    "type": "desery",
+    "price": "12.00",
+    "imageFile": "mcflurry_lion_karmelowe.png"
+  },
+  {
+    "name": "McFlurry o smaku waniliowym Lion z polewą truskawkową",
+    "type": "desery",
+    "price": "12.00",
+    "imageFile": "mcflurry_lion_truskawka.png"
+  },
+  {
+    "name": "McFlurry o smaku waniliowym Lion",
+    "type": "desery",
+    "price": "11.80",
+    "imageFile": "mcflurry_lion.png"
+  },
+  {
+    "name": "McFlurry pistacjowe",
+    "type": "desery",
+    "price": "14.00",
+    "imageFile": "mcflurry_pistacjowe.png"
+  },
+  {
+    "name": "McMuffin Avocado",
+    "type": "śniadanie",
+    "price": "14.30",
+    "imageFile": "mcmuffin_avocado.png"
+  },
+  {
+    "name": "McMuffin Farmerski",
+    "type": "śniadanie",
+    "price": "11.90",
+    "imageFile": "mcmuffin_farmerski.png"
+  },
+  {
+    "name": "McMuffin z jajkiem i bekonem",
+    "type": "śniadanie",
+    "price": "12.20",
+    "imageFile": "mcmuffin_jajko_bekon.png"
+  },
+  {
+    "name": "McMuffin z jajkiem",
+    "type": "śniadanie",
+    "price": "8.40",
+    "imageFile": "mcmuffin_jajko.png"
+  },
+  {
+    "name": "McMuffin z twarożkiem i rzodkiewką",
+    "type": "śniadanie",
+    "price": "11.30",
+    "imageFile": "mcmuffin_twarog_rzodkiewka.png"
+  },
+  {
+    "name": "McMuffin Wieprzowy z jajkiem",
+    "type": "śniadanie",
+    "price": "12.50",
+    "imageFile": "mcmuffin_wieprzowy_jajko.png"
+  },
+  {
+    "name": "Kurczak McNuggets 6 szt.",
+    "type": "kurczak",
+    "price": "6.60",
+    "imageFile": "mcnuggets_6.png"
+  },
+  {
+    "name": "Kurczak McNuggets 10 szt.",
+    "type": "kurczak",
+    "price": "11.00",
+    "imageFile": "mcnuggets_10.png"
+  },
+  {
+    "name": "Kurczak McNuggets 20 szt.",
+    "type": "kurczak",
+    "price": "19.90",
+    "imageFile": "mcnuggets_20.png"
+  },
+  {
+    "name": "McRoyal Podwójny",
+    "type": "burgery",
+    "price": "27.70",
+    "imageFile": "mcroyal_podwojny.png"
+  },
+  {
+    "name": "McRoyal",
+    "type": "burgery",
+    "price": "23.70",
+    "imageFile": "mcroyal.png"
+  },
+  {
+    "name": "McShaker Fries z posypką o smaku papryki",
+    "type": "frytki i dodatki",
+    "price": "10.50",
+    "imageFile": "mcshaker_fries_posypka_papryka.png"
+  },
+  {
+    "name": "McShaker Fries z posypką o smaku śmietanki z cebulką",
+    "type": "frytki i dodatki",
+    "price": "10.50",
+    "imageFile": "mcshaker_fries_posypka_smietanka_z_cebulka.png"
+  },
+  {
+    "name": "McTost Bekon i Ser",
+    "type": "śniadanie",
+    "price": "7.80",
+    "imageFile": "mctost_bekon_ser.png"
+  },
+  {
+    "name": "McTost Pieczarki i Ser",
+    "type": "śniadanie",
+    "price": "7.80",
+    "imageFile": "mctost_pieczarki_ser.png"
+  },
+  {
+    "name": "McWrap Chrupiący Bekon Deluxe",
+    "type": "wrapy i sałatki",
+    "price": "25.10",
+    "imageFile": "mcwrap_chrupiacy_bekon_deluxe.png"
+  },
+  {
+    "name": "McWrap Chrupiący Klasyczny",
+    "type": "wrapy i sałatki",
+    "price": "24.40",
+    "imageFile": "mcwrap_chrupiacy_klasyczny.png"
+  },
+  {
+    "name": "McWrap Teriyaki",
+    "type": "wrapy i sałatki",
+    "price": "26.40",
+    "imageFile": "mcwrap_teriyaki.png"
+  },
+  {
+    "name": "Mozzarella sticks (3 szt.)",
+    "type": "frytki i dodatki",
+    "price": "11.50",
+    "imageFile": "mozzarella_sticks.png"
+  },
+  {
+    "name": "Poziomkowa Iced Latte",
+    "type": ["McCafé", "napoje"],
+    "price": "17.20",
+    "imageFile": "poziomkowa_iced_latte.png"
+  },
+  {
+    "name": "Red Chikker",
+    "type": "burgery",
+    "price": "7.40",
+    "imageFile": "red_chikker.png"
+  },
+  {
+    "name": "Sałatka Kurczak Premium",
+    "type": "wrapy i sałatki",
+    "price": "26.10",
+    "imageFile": "salatka_kurczak_premium.png"
+  },
+  {
+    "name": "Mała sałatka",
+    "type": "wrapy i sałatki",
+    "price": "9.90",
+    "imageFile": "salatka_mala.png"
+  },
+  {
+    "name": "Shake o smaku czekoladowym",
+    "type": ["desery", "napoje"],
+    "price": "9.70",
+    "imageFile": "shake_czekoladowy.png"
+  },
+  {
+    "name": "Shake o smaku truskawkowym",
+    "type": ["desery", "napoje"],
+    "price": "9.70",
+    "imageFile": "shake_truskawka.png"
+  },
+  {
+    "name": "Shake o smaku waniliowym",
+    "type": ["desery", "napoje"],
+    "price": "9.70",
+    "imageFile": "shake_waniliowy.png"
+  },
+  {
+    "name": "Shake z kawą",
+    "type": ["McCafé", "napoje", "desery"],
+    "price": "13.80",
+    "imageFile": "shake_z_kawa.png"
+  },
+  {
+    "name": "Śniadaniowy McWrap z jajecznicą i bekonem",
+    "type": ["śniadanie", "wrapy i sałatki"],
+    "price": "16.10",
+    "imageFile": "sniadaniowy_mcwrap_jajecznica_bekon.png"
+  },
+  {
+    "name": "Śniadaniowy McWrap z jajecznicą i pieczarkami",
+    "type": ["śniadanie", "wrapy i sałatki"],
+    "price": "16.10",
+    "imageFile": "sniadaniowy_mcwrap_jajecznica_pieczarki.png"
+  },
+  {
+    "name": "Śniadaniowy McWrap z jajecznicą i wieprzowiną",
+    "type": ["śniadanie", "wrapy i sałatki"],
+    "price": "16.40",
+    "imageFile": "sniadaniowy_mcwrap_jajecznica_wieprzowina.png"
+  },
+  {
+    "name": "Soczyste jabłuszka",
+    "type": "frytki i dodatki",
+    "price": "7.20",
+    "imageFile": "soczyste_jabluszka.png"
+  },
+  {
+    "name": "Sok jabłkowy 0,25l",
+    "type": "napoje",
+    "price": "8.00",
+    "imageFile": "sok_jablkowy.png"
+  },
+  {
+    "name": "Sok pomarańczowy 0,25l",
+    "type": "napoje",
+    "price": "8.00",
+    "imageFile": "sok_pomaranczowy.png"
+  },
+  {
+    "name": "Sos barbecue",
+    "type": "sosy",
+    "price": "1.90",
+    "imageFile": "sos_barbecue.png"
+  },
+  {
+    "name": "Sos Chili Lemon",
+    "type": "sosy",
+    "price": "1.90",
+    "imageFile": "sos_chili_lemon.png"
+  },
+  {
+    "name": "Sos czosnkowy",
+    "type": "sosy",
+    "price": "1.90",
+    "imageFile": "sos_czosnkowy.png"
+  },
+  {
+    "name": "Sos słodko-kwaśny",
+    "type": "sosy",
+    "price": "1.90",
+    "imageFile": "sos_slodko_kwasny.png"
+  },
+  {
+    "name": "Sos śmietanowy",
+    "type": "sosy",
+    "price": "1.90",
+    "imageFile": "sos_smietanowy.png"
   },
   {
     "name": "Sprite",
     "type": "napoje",
-    "price": "5.99"
+    "price": "8.00",
+    "imageFile": "sprite.png"
   },
   {
-    "name": "Kawa",
-    "type": "napoje",
-    "price": "8.99"
-  },
-  {
-    "name": "Herbata",
-    "type": "napoje",
-    "price": "6.99"
-  },
-  {
-    "name": "McToast Śniadaniowy",
-    "type": "śniadania",
-    "price": "11.99"
-  },
-  {
-    "name": "Hotcakes z Syropem",
-    "type": "śniadania",
-    "price": "14.49"
-  },
-  {
-    "name": "Jajecznica z Szynką i Serem",
-    "type": "śniadania",
-    "price": "13.99"
-  },
-  {
-    "name": "McWrap Śniadaniowy",
-    "type": "śniadania",
-    "price": "16.99"
-  },
-  {
-    "name": "McMuffin z Szynką i Jajkiem",
-    "type": "śniadania",
-    "price": "10.99"
-  },
-  {
-    "name": "McDouble",
-    "type": "kanapki",
-    "price": "20.99"
-  },
-  {
-    "name": "McRoyale z Serem",
-    "type": "kanapki",
-    "price": "24.99"
-  },
-  {
-    "name": "McVeggie",
+    "name": "Veggie Burger",
     "type": "burgery",
-    "price": "16.49"
-  },
-  {
-    "name": "McRoyal Deluxe",
-    "type": "burgery",
-    "price": "23.99"
-  },
-  {
-    "name": "McChicken Deluxe",
-    "type": "kanapki",
-    "price": "21.99"
-  },
-  {
-    "name": "McRib",
-    "type": "kanapki",
-    "price": "19.99"
-  },
-  {
-    "name": "McSalad z Kurczakiem",
-    "type": "sałatki",
-    "price": "14.99"
-  },
-  {
-    "name": "McSalad Premium",
-    "type": "sałatki",
-    "price": "17.99"
-  },
-  {
-    "name": "McVeggie Salad",
-    "type": "sałatki",
-    "price": "12.99"
-  },
-  {
-    "name": "McWrap Caesar",
-    "type": "wrapy",
-    "price": "15.99"
-  },
-  {
-    "name": "McWrap Grillowany Kurczak",
-    "type": "wrapy",
-    "price": "16.99"
-  },
-  {
-    "name": "McWrap Warzywny",
-    "type": "wrapy",
-    "price": "14.99"
-  },
-  {
-    "name": "McFlurry z Oreo i Krówką",
-    "type": "desery",
-    "price": "13.99"
-  },
-  {
-    "name": "Sundae Czekoladowe",
-    "type": "desery",
-    "price": "8.99"
-  },
-  {
-    "name": "Jogurt z Owocami",
-    "type": "desery",
-    "price": "7.99"
-  },
-  {
-    "name": "Ice Tea Brzoskwinia",
-    "type": "napoje",
-    "price": "6.99"
-  },
-  {
-    "name": "Kawa Latte",
-    "type": "kawa",
-    "price": "9.99"
-  },
-  {
-    "name": "Cappuccino",
-    "type": "kawa",
-    "price": "8.49"
-  },
-  {
-    "name": "Shake Waniliowy",
-    "type": "napoje",
-    "price": "9.99"
-  },
-  {
-    "name": "Shake Czekoladowy",
-    "type": "napoje",
-    "price": "9.99"
-  },
-  {
-    "name": "McDouble Deluxe",
-    "type": "kanapki",
-    "price": "26.99"
-  },
-  {
-    "name": "McSpicy",
-    "type": "kanapki",
-    "price": "21.99"
-  },
-  {
-    "name": "McVeggie Deluxe",
-    "type": "burgery",
-    "price": "22.49"
-  },
-  {
-    "name": "McFlurry z Oreo i Malinami",
-    "type": "desery",
-    "price": "14.99"
-  },
-  {
-    "name": "Sundae Truskawkowe",
-    "type": "desery",
-    "price": "9.99"
-  },
-  {
-    "name": "Jogurt z Granolą",
-    "type": "desery",
-    "price": "8.99"
-  },
-  {
-    "name": "Ice Tea Cytrynowe",
-    "type": "napoje",
-    "price": "6.99"
-  },
-  {
-    "name": "Sok Jabłkowy",
-    "type": "napoje",
-    "price": "6.99"
-  },
-  {
-    "name": "Sok Pomarańczowy",
-    "type": "napoje",
-    "price": "6.99"
-  },
-  {
-    "name": "Woda Mineralna",
-    "type": "napoje",
-    "price": "2.99"
-  },
-  {
-    "name": "Espresso",
-    "type": "kawa",
-    "price": "7.99"
-  },
-  {
-    "name": "Flat White",
-    "type": "kawa",
-    "price": "8.49"
-  },
-  {
-    "name": "Shake Truskawkowy",
-    "type": "napoje",
-    "price": "10.99"
-  },
-  {
-    "name": "Shake Malinowy",
-    "type": "napoje",
-    "price": "10.99"
-  },
-  {
-    "name": "McRoyal z Kurczakiem",
-    "type": "burgery",
-    "price": "23.49"
-  },
-  {
-    "name": "McChicken Classic",
-    "type": "kanapki",
-    "price": "19.99"
-  },
-  {
-    "name": "McVeggie Classic",
-    "type": "burgery",
-    "price": "18.49"
-  },
-  {
-    "name": "McFlurry z Oreo i Czekoladą",
-    "type": "desery",
-    "price": "13.99"
-  },
-  {
-    "name": "Sundae Malinowe",
-    "type": "desery",
-    "price": "9.99"
-  },
-  {
-    "name": "Jogurt z Jagodami",
-    "type": "desery",
-    "price": "8.99"
-  },
-  {
-    "name": "Ice Tea Zielona Herbata",
-    "type": "napoje",
-    "price": "6.99"
-  },
-  {
-    "name": "Espresso Podwójne",
-    "type": "kawa",
-    "price": "9.99"
-  },
-  {
-    "name": "Mocca",
-    "type": "kawa",
-    "price": "9.49"
-  },
-  {
-    "name": "Shake Pistacjowy",
-    "type": "napoje",
-    "price": "12.99"
-  },
-  {
-    "name": "Shake Malinowo-Cytrynowy",
-    "type": "napoje",
-    "price": "12.99"
-  },
-  {
-    "name": "Frytki Małe",
-    "type": "frytki",
-    "price": "6.99"
-  },
-  {
-    "name": "Frytki Średnie",
-    "type": "frytki",
-    "price": "8.99"
-  },
-  {
-    "name": "Frytki Duże",
-    "type": "frytki",
-    "price": "10.99"
-  },
-  {
-    "name": "Frytki Belgijskie Duże",
-    "type": "frytki",
-    "price": "12.99"
-  },
-  {
-    "name": "Frytki Belgijskie Małe",
-    "type": "frytki",
-    "price": "8.99"
-  },
-  {
-    "name": "Burger Drwala",
-    "type": "burgery",
-    "price": "22.99"
-  },
-  {
-    "name": "Chikker",
-    "type": "kanapki",
-    "price": "8.99"
-  },
-  {
-    "name": "RedChikker",
-    "type": "kanapki",
-    "price": "8.99"
-  },
-  {
-    "name": "Burger Drwala Z Chrzanem",
-    "type": "burgery",
-    "price": "22.99"
-  },
-  {
-    "name": "Burger Drwala na Ostro",
-    "type": "burgery",
-    "price": "22.99"
-  },
-  {
-    "name": "Burger Drwala z Kurczakiem",
-    "type": "burgery",
-    "price": "22.99"
-  },
-  {
-    "name": "Burger Drwala z Żurawiną",
-    "type": "burgery",
-    "price": "22.99"
-  },
-  {
-    "name": "McCrispy",
-    "type": "kurczaki",
-    "price": "13.99"
-  },
-  {
-    "name": "McCrispy Supreme",
-    "type": "kurczaki",
-    "price": "17.49"
+    "price": "21.60",
+    "imageFile": "veggie_burger.png"
   },
   {
     "name": "Veggie McWrap",
-    "type": "wrapy",
-    "price": "13.99"
+    "type": "wrapy i sałatki",
+    "price": "21.60",
+    "imageFile": "veggie_mcwrap.png"
   },
   {
-    "name": "Frytki zakręcone z sosem",
-    "type": "frytki",
-    "price": "11.99"
-  },
-  {
-    "name": "Chicken Box",
-    "type": "kurczaki",
-    "price": "28.99"
-  },
-  {
-    "name": "Chrupiące marcheweczki",
-    "type": "przekąski",
-    "price": "4.99"
-  },
-  {
-    "name": "Soczyste jabłuszka",
-    "type": "przekąski",
-    "price": "4.99"
-  },
-  {
-    "name": "Mus jabłkowy Kubuś",
-    "type": "przekąski",
-    "price": "4.99"
-  },
-  {
-    "name": "Herbata",
-    "type": "napoje",
-    "price": "7.99"
-  },
-  {
-    "name": "Caramel Latte Macchiato",
-    "type": "kawa",
-    "price": "7.99"
+    "name": "WieśMac Podwójny",
+    "type": "burgery",
+    "price": "27.70",
+    "imageFile": "wiesmac_podwojny.png"
   },
   {
     "name": "WieśMac",
     "type": "burgery",
-    "price": "18.99"
+    "price": "23.70",
+    "imageFile": "wiesmac.png"
   },
   {
-    "name": "McFlurry Lion",
-    "type": "desery",
-    "price": "12.99"
+    "name": "Woda mineralna gazowana 0,5l",
+    "type": "napoje",
+    "price": "8.60",
+    "imageFile": "woda_mineralna_gaz.png"
   },
   {
-    "name": "McFlurry M&M's",
-    "type": "desery",
-    "price": "12.99"
+    "name": "Woda mineralna niegazowana 0,5l",
+    "type": "napoje",
+    "price": "8.60",
+    "imageFile": "woda_mineralna_niegazowana.png"
+  },
+  {
+    "name": "Ziemniaczki z pieprzem z sosem",
+    "type": "frytki i dodatki",
+    "price": "10.90",
+    "imageFile": "ziemniaczki_z_pieprzem_z_sosem.png"
   }
 ]

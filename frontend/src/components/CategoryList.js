@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MenuItem from "./MenuItem";
+
+const backendUrl = process.env.REACT_APP_BACKEND_URL
+
 function CategoryList({ type }) {
   const [products, setProducts] = useState([]);
 
@@ -8,7 +11,7 @@ function CategoryList({ type }) {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:32001/products/${type}`
+          `${backendUrl}/products/${type}`
         );
         setProducts(response.data);
       } catch (error) {

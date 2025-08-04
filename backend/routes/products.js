@@ -9,41 +9,76 @@ const productSchema = yup.object().shape({
     .string()
     .trim()
     .matches(
-      /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 ]{2,}$/,
-      "Nieprawidłowa nazwa produktu"
+      /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 \-,.()]{2,50}$/,
+      "Nieprawidłowa nazwa produktu."
     )
     .required("Nazwa produktu jest wymagana"),
   type: yup
-    .string()
-    .trim()
-    .matches(
-      /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 ]{2,}$/,
-      "Nieprawidłowy typ produktu"
+    .mixed()
+    .test(
+      'type-validation',
+      'Nieprawidłowy typ produktu. Dozwolone znaki: litery, cyfry, spacje, -,.().',
+      function(value) {
+        if (typeof value === 'string') {
+          return /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 \-,.()]{2,30}$/.test(value.trim());
+        }
+        if (Array.isArray(value)) {
+          return value.length > 0 && 
+                value.length <= 5 &&
+                value.every(item => 
+                  typeof item === 'string' && 
+                  item.trim().length >= 2 &&
+                  item.trim().length <= 30 &&
+                  /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 \-,.()]{2,30}$/.test(item.trim())
+                );
+        }
+        return false;
+      }
     )
     .required("Typ produktu jest wymagany"),
   price: yup
-    .number()
+    .string()
     .required("Cena produktu jest wymagana")
-    .min(0.01, "Cena musi być większa niż 0")
-    .max(1000, "Cena może wynosić maksymalnie 1000"),
+    .matches(/^\d+(\.\d{1,2})?$/, "Cena musi być liczbą z maksymalnie 2 miejscami po przecinku")
+    .test(
+      'price-range',
+      'Cena musi być między 0.01 a 999.99',
+      function(value) {
+        if (!value) return false;
+        const numValue = parseFloat(value);
+        return numValue >= 0.01 && numValue <= 999.99;
+      }
+    ),
+  image: yup
+    .string()
+    .required("Zdjęcie produktu jest wymagane")
+    .test(
+      'is-base64',
+      'Zdjęcie musi być w formacie Base64',
+      function(value) {
+        if (!value) return false;
+        try {
+          if (!/^[A-Za-z0-9+/]*={0,2}$/.test(value)) {
+            return false;
+          }
+          return Buffer.from(value, 'base64').toString('base64') === value;
+        } catch {
+          return false;
+        }
+      }
+    )
 });
 
 productRoutes.route("/products").get(async function (req, res) {
   try {
     const productsCollection = dbo.getDb("mcdonalds").collection("products");
-    const results = await new Promise((resolve, reject) => {
-      productsCollection.find().toArray((err, result) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(result);
-        }
-      });
-    });
-    res.send(results);
+    
+    const results = await productsCollection.find({}).toArray();
+    
+    res.json(results);
   } catch (error) {
-    console.error(error);
-    res.sendStatus(500);
+    console.error("Błąd pobierania produktów:", error);
+    res.status(500).json({ error: "Błąd serwera podczas pobierania produktów" });
   }
 });
 
@@ -51,31 +86,67 @@ productRoutes.route("/products/:category?").get(async function (req, res) {
   try {
     const productsCollection = dbo.getDb("mcdonalds").collection("products");
 
-    const uniqueCategories = await productsCollection.distinct("type");
+    const allProducts = await productsCollection.find({}, { projection: { type: 1 } }).toArray();
+    
+    const uniqueCategories = new Set();
+    
+    allProducts.forEach(product => {
+      if (typeof product.type === 'string') {
+        uniqueCategories.add(product.type);
+      } else if (Array.isArray(product.type)) {
+        product.type.forEach(t => uniqueCategories.add(t));
+      }
+    });
+    
+    const categoriesArray = Array.from(uniqueCategories);
 
-    const category =
-      req.params.category ||
-      (uniqueCategories.length > 0 ? uniqueCategories[0] : null);
+    const category = req.params.category || 
+                    (categoriesArray.length > 0 ? categoriesArray[0] : null);
 
-    const results = await productsCollection
-      .find(category ? { type: category } : {})
-      .toArray();
+    let query = {};
+    
+    if (category) {
+      query = {
+        $or: [
+          { type: category },
+          { type: { $in: [category] } }
+        ]
+      };
+    }
 
-    res.send(results);
+    const results = await productsCollection.find(query).toArray();
+
+    res.json(results)
+
   } catch (error) {
-    console.error(error);
-    res.sendStatus(500);
+    console.error("Błąd pobierania produktów według kategorii:", error);
+    res.status(500).json({ error: "Błąd serwera podczas pobierania produktów" });
   }
 });
 
 productRoutes.route("/categories").get(async function (req, res) {
   try {
     const productsCollection = dbo.getDb("mcdonalds").collection("products");
-    const uniqueCategories = await productsCollection.distinct("type");
-    res.send(uniqueCategories);
+    
+    const allProducts = await productsCollection.find({}, { projection: { type: 1 } }).toArray();
+    
+    const uniqueCategories = new Set();
+    
+    allProducts.forEach(product => {
+      if (typeof product.type === 'string') {
+        uniqueCategories.add(product.type);
+      } else if (Array.isArray(product.type)) {
+        product.type.forEach(t => uniqueCategories.add(t));
+      }
+    });
+    
+    const categoriesArray = Array.from(uniqueCategories).sort();
+    
+    res.json(categoriesArray);
+    
   } catch (error) {
-    console.error(error);
-    res.sendStatus(500);
+    console.error("Błąd pobierania kategorii:", error);
+    res.status(500).json({ error: "Błąd serwera podczas pobierania kategorii" });
   }
 });
 
@@ -90,13 +161,20 @@ productRoutes.route("/products/:id").delete(async function (req, res) {
         .json({ error: "Nieprawidłowy identyfikator produktu." });
     }
 
-    await db_connect
+    const result = await db_connect
       .collection("products")
-      .deleteOne({ _id: ObjectId(productId) });
+      .deleteOne({ _id: new ObjectId(productId) });
+
+    if (result.deletedCount === 0) {
+      return res
+        .status(404)
+        .json({ error: "Produkt o podanym ID nie został znaleziony." });
+    }
 
     res.json({ message: "Produkt został pomyślnie usunięty." });
+
   } catch (error) {
-    console.error(error);
+    console.error("Błąd podczas usuwania produktu:", error);
     res.status(500).json({ error: "Wystąpił błąd podczas usuwania produktu." });
   }
 });
@@ -116,7 +194,10 @@ productRoutes.route("/products/:id").put(async function (req, res) {
 
     const existingProduct = await db_connect
       .collection("products")
-      .findOne({ name: req.body.name, _id: { $ne: ObjectId(productId) } });
+      .findOne({ 
+        name: req.body.name.trim(), 
+        _id: { $ne: new ObjectId(productId) } 
+      });
 
     if (existingProduct) {
       return res
@@ -128,11 +209,12 @@ productRoutes.route("/products/:id").put(async function (req, res) {
       name: req.body.name,
       type: req.body.type,
       price: req.body.price,
+      image: req.body.image
     };
 
     const result = await db_connect
       .collection("products")
-      .updateOne({ _id: ObjectId(productId) }, { $set: updatedProduct });
+      .updateOne({ _id: new ObjectId(productId) }, { $set: updatedProduct });
 
     if (result.matchedCount === 0) {
       return res
@@ -141,14 +223,14 @@ productRoutes.route("/products/:id").put(async function (req, res) {
     }
 
     res.json({ message: "Produkt został zaktualizowany pomyślnie." });
+
   } catch (error) {
-    console.error(error);
+    console.error("Błąd podczas aktualizacji produktu:", error);
+    
     if (error.name === "ValidationError") {
       res.status(400).json({ error: error.message });
     } else {
-      res
-        .status(500)
-        .json({ error: "Wystąpił błąd podczas aktualizacji produktu." });
+      res.status(500).json({ error: "Wystąpił błąd podczas aktualizacji produktu." });
     }
   }
 });
@@ -161,27 +243,33 @@ productRoutes.route("/products").post(async function (req, res) {
 
     const existingProduct = await db_connect
       .collection("products")
-      .findOne({ name: req.body.name });
+      .findOne({ name: req.body.name.trim() });
 
     if (existingProduct) {
-      res.status(400).json({ error: "Produkt o tej nazwie już istnieje." });
+      return res.status(400).json({ error: "Produkt o tej nazwie już istnieje." });
     }
+
     let myobj = {
       name: req.body.name,
       type: req.body.type,
       price: req.body.price,
+      image: req.body.image
     };
 
-    await db_connect.collection("products").insertOne(myobj);
-    res.json({ message: "Produkt został dodany." });
+    const result = await db_connect.collection("products").insertOne(myobj);
+    
+    res.status(201).json({ 
+      message: "Produkt został dodany.",
+      productId: result.insertedId 
+    });
+
   } catch (error) {
     console.error("Błąd podczas dodawania produktu:", error);
+    
     if (error.name === "ValidationError") {
       res.status(400).json({ error: error.message });
     } else {
-      res
-        .status(500)
-        .json({ error: "Wystąpił błąd podczas dodawania produktu." });
+      res.status(500).json({ error: "Wystąpił błąd podczas dodawania produktu." });
     }
   }
 });

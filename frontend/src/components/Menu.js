@@ -6,6 +6,8 @@ import CategoryList from "./CategoryList";
 import { FaArrowRight } from "react-icons/fa";
 import { TiShoppingCart } from "react-icons/ti";
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL
+
 function Menu() {
   const { state } = useAppContext();
   const { basket } = state;
@@ -19,7 +21,7 @@ function Menu() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:32001/categories");
+        const response = await axios.get(`${backendUrl}/categories`);
         setTypes(response.data);
         firstTypeRef.current && firstTypeRef.current.focus();
       } catch (error) {

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import EditProductInBasket from "./EditProductInBasket";
 import axios from "axios";
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL
+
 function Basket() {
   const { state, dispatch } = useAppContext();
   const { basket, takeout } = state;
@@ -40,7 +42,7 @@ function Basket() {
         takeout,
       };
 
-      const response = await axios.post("http://localhost:32001/orders", data);
+      const response = await axios.post(`${backendUrl}/orders`, data);
       const orderId = response.data.orderId;
 
       navigate(`/start/menu/basket/payment/${orderId}`);

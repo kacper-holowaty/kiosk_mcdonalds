@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useAppContext } from "../context/AppContext";
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL
+
 function PaymentPanel() {
   const [price, setPrice] = useState(null);
   const navigate = useNavigate();
@@ -14,7 +16,7 @@ function PaymentPanel() {
     const getTotalPrice = () => {
       return new Promise((resolve, reject) => {
         axios
-          .get(`http://localhost:32001/orders/totalprice/${orderId}`)
+          .get(`${backendUrl}/orders/totalprice/${orderId}`)
           .then((response) => {
             resolve(response.data.totalAmount);
           })
@@ -34,13 +36,13 @@ function PaymentPanel() {
 
   const handlePayment = async () => {
     try {
-      await axios.delete(`http://localhost:32001/orders/delete/${orderId}`);
+      await axios.delete(`${backendUrl}/orders/delete/${orderId}`);
 
       const response = await axios.get(
-        "http://localhost:32001/orders/generate"
+        `${backendUrl}/orders/generate`
       );
 
-      await axios.post("http://localhost:32001/history/add", {
+      await axios.post(`${backendUrl}/history/add`, {
         order: basket,
         takeout,
         totalAmount: price,

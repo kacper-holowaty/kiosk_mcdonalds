@@ -1,10 +1,12 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useAppContext } from "../../context/AppContext";
 import AdminPanel from "./AdminPanel";
-import axios from "axios";
 import EditForm from "./EditForm";
 import { Link } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
+
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 function AdminMenu() {
   const { keycloak } = useKeycloak();
@@ -20,7 +22,7 @@ function AdminMenu() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/admin/products`,
+          `${backendUrl}/admin/products`,
           {
             params: { name: nameFilter, type: categoryFilter },
           }
@@ -37,7 +39,7 @@ function AdminMenu() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:32001/categories");
+        const response = await axios.get(`${backendUrl}/categories`);
         setCategories(response.data);
       } catch (error) {
         console.error("Błąd podczas pobierania kategorii:", error);
@@ -49,16 +51,16 @@ function AdminMenu() {
 
   const handleDeleteProduct = async (productId) => {
     try {
-      await axios.delete(`http://localhost:32001/products/${productId}`);
+      await axios.delete(`${backendUrl}/products/${productId}`);
 
-      const responseAllProducts = await axios.get(
-        "http://localhost:32001/products"
-      );
-      dispatch({ type: "SET_PRODUCTS", payload: responseAllProducts.data });
+    const responseAllProducts = await axios.get(
+      `${backendUrl}/products`
+    );
+    dispatch({ type: "SET_PRODUCTS", payload: responseAllProducts.data });
 
       if (nameFilter || categoryFilter) {
         const response = await axios.get(
-          "http://localhost:32001/admin/products",
+          `${backendUrl}/admin/products`,
           {
             params: {
               name: nameFilter,
@@ -76,16 +78,16 @@ function AdminMenu() {
   const handleUpdateProduct = async (updatedProduct, values) => {
     try {
       const productId = updatedProduct._id;
-      await axios.put(`http://localhost:32001/products/${productId}`, values);
+      await axios.put(`${backendUrl}/products/${productId}`, values);
 
       const responseAllProducts = await axios.get(
-        "http://localhost:32001/products"
+        `${backendUrl}/products`
       );
       dispatch({ type: "SET_PRODUCTS", payload: responseAllProducts.data });
 
       if (nameFilter || categoryFilter) {
         const response = await axios.get(
-          "http://localhost:32001/admin/products",
+          `${backendUrl}/admin/products`,
           {
             params: {
               name: nameFilter,

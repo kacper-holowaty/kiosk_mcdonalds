@@ -1,6 +1,8 @@
 import React, { createContext, useReducer, useContext, useEffect } from "react";
 import axios from "axios";
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL
+
 const AppContext = createContext();
 
 const reducer = (state, action) => {
@@ -66,7 +68,7 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:32001/products");
+        const response = await axios.get(`${backendUrl}/products`);
         dispatch({ type: "SET_PRODUCTS", payload: response.data });
       } catch (error) {
         console.error("Błąd podczas pobierania danych:", error);

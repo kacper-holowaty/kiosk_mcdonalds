@@ -1,10 +1,13 @@
+import axios from "axios";
 import { useAppContext } from "../../context/AppContext";
 import { useFormik } from "formik";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
 import AdminPanel from "./AdminPanel";
 import { useKeycloak } from "@react-keycloak/web";
+import { useState } from "react";
+
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 function AddProductForm() {
   const { keycloak } = useKeycloak();
@@ -15,6 +18,7 @@ function AddProductForm() {
       name: "",
       type: "",
       price: 0,
+      image: null,
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -38,9 +42,19 @@ function AddProductForm() {
     }),
     onSubmit: async (values) => {
       try {
-        await axios.post("http://localhost:32001/products", values);
+        const formData = new FormData();
+        formData.append("name", values.name);
+        formData.append("type", values.type);
+        formData.append("price", values.price);
+        formData.append("image", values.image);
 
-        const response = await axios.get("http://localhost:32001/products");
+        await axios.post(`${backendUrl}/products`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        const response = await axios.get(`${backendUrl}/products`);
         dispatch({ type: "SET_PRODUCTS", payload: response.data });
         alert("Dodano nowy produkt!");
         navigate("/adminpanel/main");
@@ -49,6 +63,15 @@ function AddProductForm() {
       }
     },
   });
+
+  const [imagePreview, setImagePreview] = useState(null);
+
+  const handleImageChange = (event) => {
+    const file = event.currentTarget.files[0];
+    formik.setFieldValue("image", file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
   return (
     <div>
       {keycloak.authenticated && <AdminPanel />}
@@ -127,6 +150,32 @@ function AddProductForm() {
               />
               {formik.touched.price && formik.errors.price && (
                 <span style={{ color: "red" }}>{formik.errors.price}</span>
+              )}
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="image"
+                className="block text-lg font-medium text-gray-600"
+              >
+                Zdjęcie:
+              </label>
+              <input
+                type="file"
+                id="image"
+                name="image"
+                onChange={handleImageChange}
+                onBlur={formik.handleBlur}
+                className="mt-1 p-2 border rounded-md w-full text-lg"
+              />
+              {formik.touched.image && formik.errors.image && (
+                <span style={{ color: "red" }}>{formik.errors.image}</span>
+              )}
+              {imagePreview && (
+                <img
+                  src={imagePreview}
+                  alt="Podgląd"
+                  className="mt-2 max-w-full h-32 object-contain"
+                />
               )}
             </div>
 

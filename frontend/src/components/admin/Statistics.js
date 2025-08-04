@@ -1,8 +1,10 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import AdminPanel from "./AdminPanel";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
+
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 function Statistics() {
   const { keycloak } = useKeycloak();
@@ -11,14 +13,14 @@ function Statistics() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:32001/statistics/daily")
+      .get(`${backendUrl}/statistics/daily`)
       .then((response) => setDailyStatistics(response.data))
       .catch((error) =>
         console.error("Błąd podczas pobierania statystyk dziennych:", error)
       );
 
     axios
-      .get("http://localhost:32001/statistics/monthly")
+      .get(`${backendUrl}/statistics/monthly`)
       .then((response) => setMonthlyStatistics(response.data))
       .catch((error) =>
         console.error("Błąd podczas pobierania statystyk miesięcznych:", error)
