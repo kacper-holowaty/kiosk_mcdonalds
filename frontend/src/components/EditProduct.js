@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import { useAppContext } from "../context/AppContext";
 
 function EditProduct({ item, stopEditing }) {
-  const [extraItems, setExtraItems] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const { dispatch } = useAppContext();
 
   const handleAddToBasket = () => {
     const editedItem = {
       ...item,
-      extraItems,
       quantity,
     };
 
@@ -18,18 +16,7 @@ function EditProduct({ item, stopEditing }) {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md mt-4">
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-600">
-          Dodatkowe elementy:
-        </label>
-        <input
-          type="text"
-          className="mt-1 p-2 border rounded-md w-full text-black"
-          value={extraItems}
-          onChange={(e) => setExtraItems(e.target.value)}
-        />
-      </div>
+    <div className="w-full">
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-600">
           Ilość:

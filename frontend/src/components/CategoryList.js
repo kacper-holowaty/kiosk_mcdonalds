@@ -22,13 +22,15 @@ function CategoryList({ type }) {
   }, [type]);
 
   return (
-    <div>
-      <h3 className="uppercase ml-32 font-bold text-2xl">{type}:</h3>
-      <ul>
+    <div className="p-4">
+      <h3 className="uppercase font-extrabold text-4xl mb-6 text-gray-800 tracking-wide">
+        {type}
+      </h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {products.map((item) => (
           <MenuItem key={item._id} item={item} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

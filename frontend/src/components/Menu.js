@@ -45,35 +45,38 @@ function Menu() {
   };
   return (
     <div>
-      <div className="flex">
+      <div className="flex justify-between items-center p-4">
+        <h1 className="text-3xl font-bold text-gray-800">
+          Wybierz, na co masz dziś ochotę...
+        </h1>
         <button
           onClick={() => navigate("/start")}
-          className="fixed top-4 right-4 bg-mcdonalds hover:bg-red-700 px-6 py-3 text-white rounded-lg text-xl"
+          className="bg-red-600 hover:bg-red-700 px-6 py-3 text-white rounded-lg text-xl"
         >
           Powrót
         </button>
-
-        <h1 className="ml-4 text-3xl mb-3 mt-3">
-          Wybierz, na co masz dziś ochotę...
-        </h1>
       </div>
       <div className="flex">
-        <ul ref={firstTypeRef} className="w-1/4">
+        <ul ref={firstTypeRef} className="w-1/3 p-4">
           {types.map((type) => (
             <li
               key={type}
               onClick={() => handleClick(type)}
               tabIndex={0}
-              className="p-6 bg-mcdonalds rounded-3xl mb-1 mt-1 ml-4 text-white flex justify-between items-center cursor-pointer hover:bg-red-700"
+              className={`p-4 rounded-lg mb-2 flex justify-between items-center cursor-pointer transition-colors duration-200 ${
+                selectedType === type
+                  ? "bg-white text-black"
+                  : "bg-red-600 text-white hover:bg-red-700"
+              }`}
             >
-              <div className="text-2xl tracking-wide">{type}</div>{" "}
+              <div className="text-xl font-semibold tracking-wide">{type}</div>
               <div>
                 <FaArrowRight />
               </div>
             </li>
           ))}
         </ul>
-        <div className="w-1/4">
+        <div className="w-2/3">
           {selectedType && <CategoryList type={selectedType} />}
         </div>
       </div>
