@@ -36,7 +36,7 @@ function AddProductForm() {
       name: Yup.string()
         .trim()
         .matches(
-          /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 \-.()]{2,50}$/,
+          /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻéñ0-9 \-.()]{2,50}$/,
           "Nieprawidłowa nazwa produktu"
         )
         .required("Nazwa produktu jest wymagana"),
@@ -44,7 +44,7 @@ function AddProductForm() {
         .required("Typ produktu jest wymagany")
         .test(
           "valid-types",
-          "Każdy typ musi mieć od 2 do 30 znaków, maksymalnie 5 typów",
+          "Nieprawidłowe dane",
           (value) => {
             if (!value) return false;
 
@@ -57,7 +57,7 @@ function AddProductForm() {
 
             return types.every(
               (t) =>
-                /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 \-.()]{2,30}$/.test(t)
+                /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻéñ0-9 \-.()]{2,30}$/.test(t)
             );
           }
         )

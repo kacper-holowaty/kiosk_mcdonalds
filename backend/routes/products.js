@@ -9,7 +9,7 @@ const productSchema = yup.object().shape({
     .string()
     .trim()
     .matches(
-      /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 \-,.()]{2,50}$/,
+      /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻéñ0-9 \-,.()]{2,50}$/,
       "Nieprawidłowa nazwa produktu."
     )
     .required("Nazwa produktu jest wymagana"),
@@ -17,10 +17,10 @@ const productSchema = yup.object().shape({
     .mixed()
     .test(
       'type-validation',
-      'Nieprawidłowy typ produktu. Dozwolone znaki: litery, cyfry, spacje, -,.().',
+      'Nieprawidłowy typ produktu. Dozwolone znaki: litery, cyfry, spacje, -.().',
       function(value) {
         if (typeof value === 'string') {
-          return /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 \-,.()]{2,30}$/.test(value.trim());
+          return /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻéñ0-9 \-,.()]{2,30}$/.test(value.trim());
         }
         if (Array.isArray(value)) {
           return value.length > 0 && 
@@ -29,7 +29,7 @@ const productSchema = yup.object().shape({
                   typeof item === 'string' && 
                   item.trim().length >= 2 &&
                   item.trim().length <= 30 &&
-                  /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 \-,.()]{2,30}$/.test(item.trim())
+                  /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻéñ0-9 \-,.()]{2,30}$/.test(item.trim())
                 );
         }
         return false;
@@ -57,6 +57,73 @@ const productSchema = yup.object().shape({
       'Zdjęcie musi być w formacie Base64',
       function(value) {
         if (!value) return false;
+        try {
+          if (!/^[A-Za-z0-9+/]*={0,2}$/.test(value)) {
+            return false;
+          }
+          return Buffer.from(value, 'base64').toString('base64') === value;
+        } catch {
+          return false;
+        }
+      }
+    )
+});
+
+const productUpdateSchema = yup.object().shape({
+  name: yup
+    .string()
+    .trim()
+    .matches(
+      /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻéñ0-9 \-,.()]{2,50}$/,
+      "Nieprawidłowa nazwa produktu."
+    )
+    .required("Nazwa produktu jest wymagana"),
+  type: yup
+    .mixed()
+    .test(
+      'type-validation',
+      'Nieprawidłowy typ produktu. Dozwolone znaki: litery, cyfry, spacje, -.().',
+      function(value) {
+        if (typeof value === 'string') {
+          return /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻéñ0-9 \-,.()]{2,30}$/.test(value.trim());
+        }
+        if (Array.isArray(value)) {
+          return value.length > 0 &&
+                 value.length <= 5 &&
+                 value.every(item =>
+                   typeof item === 'string' &&
+                   item.trim().length >= 2 &&
+                   item.trim().length <= 30 &&
+                   /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻéñ0-9 \-,.()]{2,30}$/.test(item.trim())
+                 );
+        }
+        return false;
+      }
+    )
+    .required("Typ produktu jest wymagany"),
+  price: yup
+    .string()
+    .required("Cena produktu jest wymagana")
+    .matches(/^\d+(\.\d{1,2})?$/, "Cena musi być liczbą z maksymalnie 2 miejscami po przecinku")
+    .test(
+      'price-range',
+      'Cena musi być między 0.00 a 999.99',
+      function(value) {
+        if (!value) return false;
+        const numValue = parseFloat(value);
+        return numValue >= 0.00 && numValue <= 999.99;
+      }
+    ),
+  image: yup
+    .string()
+    .nullable()
+    .test(
+      'is-base64-if-provided',
+      'Zdjęcie musi być w formacie Base64',
+      function(value) {
+        if (!value) {
+          return true;
+        }
         try {
           if (!/^[A-Za-z0-9+/]*={0,2}$/.test(value)) {
             return false;
@@ -190,13 +257,13 @@ productRoutes.route("/products/:id").put(async function (req, res) {
         .json({ error: "Nieprawidłowy identyfikator produktu." });
     }
 
-    await productSchema.validate(req.body);
+    await productUpdateSchema.validate(req.body);
 
     const existingProduct = await db_connect
       .collection("products")
-      .findOne({ 
-        name: req.body.name.trim(), 
-        _id: { $ne: new ObjectId(productId) } 
+      .findOne({
+        name: req.body.name.trim(),
+        _id: { $ne: new ObjectId(productId) },
       });
 
     if (existingProduct) {
@@ -205,16 +272,19 @@ productRoutes.route("/products/:id").put(async function (req, res) {
         .json({ error: "Produkt o tej nazwie już istnieje." });
     }
 
-    const updatedProduct = {
+    const updateFields = {
       name: req.body.name,
       type: req.body.type,
       price: req.body.price,
-      image: req.body.image
     };
+
+    if (req.body.image) {
+      updateFields.image = req.body.image;
+    }
 
     const result = await db_connect
       .collection("products")
-      .updateOne({ _id: new ObjectId(productId) }, { $set: updatedProduct });
+      .updateOne({ _id: new ObjectId(productId) }, { $set: updateFields });
 
     if (result.matchedCount === 0) {
       return res

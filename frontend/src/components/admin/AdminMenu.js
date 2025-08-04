@@ -36,18 +36,18 @@ function AdminMenu() {
     fetchData();
   }, [nameFilter, categoryFilter]);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(`${backendUrl}/categories`);
-        setCategories(response.data);
-      } catch (error) {
-        console.error("Błąd podczas pobierania kategorii:", error);
-      }
-    };
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/categories`);
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Błąd podczas pobierania kategorii:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchCategories();
-  }, [categories]);
+  }, []);
 
   const handleDeleteProduct = async (productId) => {
     try {
@@ -70,6 +70,7 @@ function AdminMenu() {
         );
         setFilteredProducts(response.data);
       }
+      fetchCategories();
     } catch (error) {
       console.error("Błąd podczas usuwania produktu:", error);
     }
@@ -98,6 +99,7 @@ function AdminMenu() {
         setFilteredProducts(response.data);
       }
       setProduct(null);
+      fetchCategories();
     } catch (error) {
       console.error("Błąd podczas aktualizacji produktu:", error);
     }
@@ -114,15 +116,15 @@ function AdminMenu() {
     <div className="pb-4">
       {keycloak.authenticated && <AdminPanel />}
       {keycloak.authenticated && keycloak.hasRealmRole("admin") ? (
-        <div>
-          <div className="max-w-3xl mr-auto mt-4 ml-4 p-4 border rounded-lg shadow-lg bg-gray-300">
-            <div className="flex mb-4">
+        <div className="flex flex-col items-center">
+          <div className="w-full max-w-4xl mt-4 p-4 border rounded-lg shadow-lg bg-gray-300">
+            <div className="flex flex-col sm:flex-row mb-4">
               <input
                 type="text"
                 placeholder="Wyszukaj produkt po nazwie"
                 value={nameFilter}
                 onChange={(e) => setNameFilter(e.target.value)}
-                className="flex-grow px-2 py-1 border rounded-l-md"
+                className="flex-grow px-2 py-1 border rounded-l-md mb-2 sm:mb-0"
               />
               <select
                 value={categoryFilter}
@@ -141,33 +143,42 @@ function AdminMenu() {
               {displayedProducts.map((item) => (
                 <li
                   key={item._id}
-                  className="flex items-center border-b-2 pb-1"
+                  className="flex flex-col sm:flex-row items-start sm:items-center border-b-2 pb-2"
                 >
-                  <span className="flex-grow">
-                    {item.name} - {item.type} - {item.price} zł
+                  <span className="flex-grow mb-2 sm:mb-0">
+                    {item.name} -{" "}
+                    {Array.isArray(item.type)
+                      ? item.type.join(", ")
+                      : item.type}{" "}
+                    - {item.price} zł
                   </span>
-                  <button
-                    onClick={() => setProduct(item)}
-                    className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2"
-                  >
-                    Edytuj
-                  </button>
-                  <button
-                    onClick={() => handleDeleteProduct(item._id)}
-                    className="px-3 py-1 bg-red-500 text-white rounded-md"
-                  >
-                    Usuń
-                  </button>
+                  <div className="flex">
+                    <button
+                      onClick={() => setProduct(item)}
+                      className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2"
+                    >
+                      Edytuj
+                    </button>
+                    <button
+                      onClick={() => handleDeleteProduct(item._id)}
+                      className="px-3 py-1 bg-red-500 text-white rounded-md"
+                    >
+                      Usuń
+                    </button>
+                  </div>
                 </li>
               ))}
             </ul>
           </div>
           {product && (
-            <EditForm
-              editedProduct={product}
-              stopEditting={onCancel}
-              updateProduct={handleUpdateProduct}
-            />
+            <>
+              <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-40"></div>
+              <EditForm
+                editedProduct={product}
+                stopEditting={onCancel}
+                updateProduct={handleUpdateProduct}
+              />
+            </>
           )}
         </div>
       ) : (
