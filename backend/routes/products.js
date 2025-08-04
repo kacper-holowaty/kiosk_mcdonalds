@@ -42,11 +42,11 @@ const productSchema = yup.object().shape({
     .matches(/^\d+(\.\d{1,2})?$/, "Cena musi być liczbą z maksymalnie 2 miejscami po przecinku")
     .test(
       'price-range',
-      'Cena musi być między 0.01 a 999.99',
+      'Cena musi być między 0.00 a 999.99',
       function(value) {
         if (!value) return false;
         const numValue = parseFloat(value);
-        return numValue >= 0.01 && numValue <= 999.99;
+        return numValue >= 0.00 && numValue <= 999.99;
       }
     ),
   image: yup

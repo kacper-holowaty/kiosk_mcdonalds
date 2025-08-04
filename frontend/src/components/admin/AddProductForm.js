@@ -5,13 +5,25 @@ import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import AdminPanel from "./AdminPanel";
 import { useKeycloak } from "@react-keycloak/web";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+const toBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const base64String = reader.result.split(',')[1];
+      resolve(base64String);
+    };
+    reader.onerror = reject;
+  });
 
 function AddProductForm() {
   const { keycloak } = useKeycloak();
   const { dispatch } = useAppContext();
+  const fileInputRef = useRef(null);
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -24,35 +36,87 @@ function AddProductForm() {
       name: Yup.string()
         .trim()
         .matches(
-          /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 ]{2,}$/,
+          /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 \-.()]{2,50}$/,
           "Nieprawidłowa nazwa produktu"
         )
         .required("Nazwa produktu jest wymagana"),
       type: Yup.string()
-        .trim()
-        .matches(
-          /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 ]{2,}$/,
-          "Nieprawidłowy typ produktu"
+        .required("Typ produktu jest wymagany")
+        .test(
+          "valid-types",
+          "Każdy typ musi mieć od 2 do 30 znaków, maksymalnie 5 typów",
+          (value) => {
+            if (!value) return false;
+
+            const types = value
+              .split(",")
+              .map((t) => t.trim())
+              .filter(Boolean);
+
+            if (types.length === 0 || types.length > 5) return false;
+
+            return types.every(
+              (t) =>
+                /^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9 \-.()]{2,30}$/.test(t)
+            );
+          }
         )
-        .required("Typ produktu jest wymagany"),
+        .test(
+          "no-trailing-comma",
+          "Nie może kończyć się przecinkiem",
+          (value) => value && !value.trim().endsWith(",")
+        ),
       price: Yup.number()
         .required("Cena produktu jest wymagana")
-        .min(0.01, "Cena musi być większa niż 0")
-        .max(1000.01, "Cena może wynosić maksymalnie 1000"),
+        .min(0, "Cena nie może być mniejsza niż 0")
+        .max(1000, "Cena może wynosić maksymalnie 1000"),
+      image: Yup.mixed()
+        .required("Zdjęcie produktu jest wymagane")
+        .test(
+          "fileSelected",
+          "Zdjęcie produktu jest wymagane",
+          (value) => value instanceof File
+        )
+        .test(
+          "fileSize",
+          "Zdjęcie nie może być większe niż 2MB",
+          (value) => !value || value.size <= 2 * 1024 * 1024
+        )
+        .test(
+          "fileType",
+          "Dozwolone formaty to JPG, JPEG, PNG, WEBP, GIF, BMP, SVG",
+          (value) =>
+            !value ||
+            [
+              "image/jpeg",
+              "image/jpg",
+              "image/png",
+              "image/webp",
+              "image/gif",
+              "image/bmp",
+              "image/svg+xml",
+            ].includes(value.type)
+        )
     }),
     onSubmit: async (values) => {
       try {
-        const formData = new FormData();
-        formData.append("name", values.name);
-        formData.append("type", values.type);
-        formData.append("price", values.price);
-        formData.append("image", values.image);
+        const base64Image = await toBase64(values.image);
 
-        await axios.post(`${backendUrl}/products`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const types = values.type
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean);
+
+        const finalType = types.length === 1 ? types[0] : types;
+
+        const payload = {
+          name: values.name.trim(),
+          type: finalType,
+          price: values.price.toString(),
+          image: base64Image,
+        };
+
+        await axios.post(`${backendUrl}/products`, payload);
 
         const response = await axios.get(`${backendUrl}/products`);
         dispatch({ type: "SET_PRODUCTS", payload: response.data });
@@ -72,13 +136,22 @@ function AddProductForm() {
     setImagePreview(URL.createObjectURL(file));
   };
 
+  const handleReset = (e) => {
+    formik.handleReset(e);
+    formik.setFieldValue("image", null);
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   return (
     <div>
       {keycloak.authenticated && <AdminPanel />}
       {keycloak.authenticated && keycloak.hasRealmRole("admin") ? (
         <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-md mt-4">
-          <h2 className="text-2xl font-semibold mb-4">Dodaj nowy produkt:</h2>
-          <form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
+          <h2 className="text-2xl font-semibold mb-4">Dodaj nowy produkt</h2>
+          <form onSubmit={formik.handleSubmit} onReset={handleReset}>
             <div className="mb-4">
               <label
                 htmlFor="name"
@@ -104,7 +177,7 @@ function AddProductForm() {
                 htmlFor="type"
                 className="block text-lg font-medium text-gray-600"
               >
-                Typ:
+                Typ (może być kilka, wpisuj po przecinku):
               </label>
               <input
                 type="text"
@@ -155,7 +228,7 @@ function AddProductForm() {
             <div className="mb-4">
               <label
                 htmlFor="image"
-                className="block text-lg font-medium text-gray-600"
+                className="block text-lg font-medium text-gray-600 pb-1"
               >
                 Zdjęcie:
               </label>
@@ -163,19 +236,35 @@ function AddProductForm() {
                 type="file"
                 id="image"
                 name="image"
+                accept="image/*"
+                ref={fileInputRef}
                 onChange={handleImageChange}
-                onBlur={formik.handleBlur}
-                className="mt-1 p-2 border rounded-md w-full text-lg"
+                className="block w-full text-md"
               />
               {formik.touched.image && formik.errors.image && (
                 <span style={{ color: "red" }}>{formik.errors.image}</span>
               )}
               {imagePreview && (
-                <img
-                  src={imagePreview}
-                  alt="Podgląd"
-                  className="mt-2 max-w-full h-32 object-contain"
-                />
+                <div className="mt-2">
+                  <img
+                    src={imagePreview}
+                    alt="Podgląd"
+                    className="max-w-full h-32 object-contain"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImagePreview(null);
+                      formik.setFieldValue("image", null);
+                      if (fileInputRef.current) {
+                        fileInputRef.current.value = null;
+                      }
+                    }}
+                    className="mt-2 text-sm text-red-600 hover:underline"
+                  >
+                    Usuń zdjęcie
+                  </button>
+                </div>
               )}
             </div>
 
