@@ -33,11 +33,19 @@ function ThankYou() {
   }, [orderId, navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
-      <h1 className="text-3xl font-semibold mb-4">Dziękujemy za wizytę!</h1>
-      <div className="text-5xl font-semibold">
-        Twój numer zamówienia: {orderNumber}
-      </div>
+    <div className="min-h-screen flex flex-col items-center justify-center text-center p-4">
+      <h1 className="text-4xl sm:text-5xl font-bold mb-4">
+        Dziękujemy za wizytę!
+      </h1>
+      <p className="text-4xl sm:text-5xl mb-8">
+        Twój numer zamówienia:{" "}
+        <span className="font-bold text-green-500">{orderNumber}</span>
+      </p>
+      <img
+        src="/happy-happy-happy-happy.gif"
+        alt="Happy Cat"
+        className="w-64 h-64 sm:w-80 sm:h-80"
+      />
     </div>
   );
 }

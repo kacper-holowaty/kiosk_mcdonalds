@@ -60,30 +60,36 @@ function PaymentPanel() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <h2 className="font-bold text-4xl text-center mx-auto mt-0 pt-8 mb-8">
-        Podsumowanie zamówienia
-      </h2>
-      <div className="bg-gray-100 p-4 rounded-lg shadow-lg w-1/2 flex flex-col items-center justify-center">
-        <p className="text-2xl">
-          Rodzaj zamówienia: {takeout ? "Na wynos" : "Na miejscu"}
-        </p>
-        <p className="text-2xl my-3">
-          Łączna cena zamówienia:{" "}
-          <strong>
-            {price !== null ? `${price} zł` : "Trwa obliczanie ceny..."}
-          </strong>
-        </p>
-        <div className="flex mt-4">
+    <div className="container mx-auto p-4 flex flex-col items-center justify-center min-h-screen">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
+        <h2 className="text-3xl font-bold text-center mb-6">
+          Podsumowanie zamówienia
+        </h2>
+        <div className="space-y-4 text-lg">
+          <div className="flex justify-between">
+            <span className="font-semibold">Rodzaj zamówienia:</span>
+            <span>{takeout ? "Na wynos" : "Na miejscu"}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="font-semibold">Łączna cena:</span>
+            {price !== null ? (
+              <strong className="text-2xl">{price} zł</strong>
+            ) : (
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-900"></div>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-4 mt-8">
           <button
             onClick={() => navigate("/start/menu/basket")}
-            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-blue-700 mr-10 text-xl"
+            className="w-full px-6 py-3 bg-gray-300 text-black rounded-md hover:bg-gray-400 transition-colors"
           >
             Powrót
           </button>
           <button
-            onClick={() => handlePayment()}
-            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-green-700 text-xl"
+            onClick={handlePayment}
+            disabled={price === null}
+            className="w-full px-6 py-3 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors disabled:bg-gray-400"
           >
             Zapłać
           </button>

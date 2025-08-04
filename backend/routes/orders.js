@@ -22,9 +22,6 @@ orderRoutes.route("/orders").post(async (req, res) => {
 
     const newOrder = order.map((item) => ({
       ...item,
-      extraItems: Array.isArray(item.extraItems)
-        ? item.extraItems
-        : item.extraItems.split(",").map((item) => item.trim()),
       quantity: parseInt(item.quantity, 10),
     }));
 

@@ -1,22 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
-import EditProductInBasket from "./EditProductInBasket";
 import axios from "axios";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 function Basket() {
   const { state, dispatch } = useAppContext();
   const { basket, takeout } = state;
-  const [product, setProduct] = useState(null);
   const navigate = useNavigate();
-  const editProduct = (item) => {
-    setProduct(item);
+
+  const removeProduct = (index) => {
+    dispatch({ type: "REMOVE_FROM_BASKET", payload: { id: index } });
   };
 
-  const removeProduct = (id) => {
-    dispatch({ type: "REMOVE_FROM_BASKET", payload: { id } });
+  const updateQuantity = (index, newQuantity) => {
+    if (newQuantity > 0) {
+      const updatedItem = { ...basket[index], quantity: newQuantity };
+      dispatch({
+        type: "UPDATE_BASKET",
+        payload: { item: updatedItem, index },
+      });
+    }
   };
 
   useEffect(() => {
@@ -27,18 +32,11 @@ function Basket() {
     }
   }, [basket, navigate]);
 
-  const handleSubmit = (editedProduct, index) => {
-    dispatch({
-      type: "UPDATE_BASKET",
-      payload: { item: editedProduct, index },
-    });
-    setProduct(null);
-  };
-
   const startPayment = async () => {
     try {
+      const orderToSend = basket.map(({ image, ...rest }) => rest);
       const data = {
-        order: basket,
+        order: orderToSend,
         takeout,
       };
 
@@ -51,67 +49,90 @@ function Basket() {
     }
   };
 
+  const total = basket.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+
   return (
-    <div className="p-4">
-      <h2 className="text-4xl font-bold mb-4 text-center mx-auto">Koszyk</h2>
-      <div>
-        <ul>
-          {basket.map((item, index) => (
-            <li key={index} className="border-b-2 pb-2 mb-4 w-1/3">
-              <p className="text-xl font-semibold">{item.name}</p>
-              <p>
-                Cena {" (za 1 sztukę): "}
-                {item.price} zł
-              </p>
-              <p>Ilość: {item.quantity}</p>
-              <p>Dodatkowe elementy: {item.extraItems}</p>
-              <div className="flex mt-2">
-                <button
-                  onClick={() => editProduct(item)}
-                  className="mr-2 px-3 py-1 bg-blue-500 text-white rounded-md"
+    <div className="container mx-auto p-4">
+      <h2 className="text-4xl font-bold mb-8 text-center">Koszyk</h2>
+      <div className="bg-white shadow-md rounded-lg p-6">
+        {basket.length === 0 ? (
+          <p className="text-center text-gray-500">Koszyk jest pusty.</p>
+        ) : (
+          <>
+            <ul>
+              {basket.map((item, index) => (
+                <li
+                  key={index}
+                  className="flex items-center justify-between border-b-2 pb-4 mb-4"
                 >
-                  Edytuj
+                  <div className="flex items-center">
+                    <img
+                      src={`data:image/png;base64,${item.image}`}
+                      alt={item.name}
+                      className="w-20 h-20 object-cover rounded-md mr-4"
+                    />
+                    <div>
+                      <p className="text-xl font-semibold">{item.name}</p>
+                      <p className="text-gray-600">
+                        Cena: {parseFloat(item.price).toFixed(2)} zł
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center">
+                    <button
+                      onClick={() => updateQuantity(index, item.quantity - 1)}
+                      className="px-3 py-1 bg-gray-300 text-black rounded-md hover:bg-gray-400"
+                    >
+                      -
+                    </button>
+                    <p className="mx-4 text-lg font-semibold">{item.quantity}</p>
+                    <button
+                      onClick={() => updateQuantity(index, item.quantity + 1)}
+                      className="px-3 py-1 bg-gray-300 text-black rounded-md hover:bg-gray-400"
+                    >
+                      +
+                    </button>
+                    <button
+                      onClick={() => removeProduct(index)}
+                      className="ml-6 px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
+                    >
+                      Usuń
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 text-right">
+              <p className="text-2xl font-bold">
+                Suma: {total.toFixed(2)} zł
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row justify-between items-center mt-8 gap-4">
+              <button
+                onClick={() => dispatch({ type: "CLEAR_BASKET" })}
+                className="px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 w-full sm:w-auto"
+              >
+                Wyczyść koszyk
+              </button>
+              <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                <button
+                  onClick={() => navigate("/start/menu")}
+                  className="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                >
+                  Powrót do Menu
                 </button>
                 <button
-                  onClick={() => removeProduct(index)}
-                  className="px-3 py-1 bg-red-500 text-white rounded-md"
+                  onClick={startPayment}
+                  className="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
                 >
-                  Usuń
+                  Przejdź do płatności
                 </button>
               </div>
-            </li>
-          ))}
-        </ul>
-        {product && (
-          <EditProductInBasket
-            item={product}
-            stopEditing={() => setProduct(null)}
-            onSubmit={(editedProduct) =>
-              handleSubmit(editedProduct, basket.indexOf(product))
-            }
-          />
-        )}
-        {basket.length > 0 && (
-          <div>
-            <button
-              onClick={() => dispatch({ type: "CLEAR_BASKET" })}
-              className="mr-2 px-4 py-2 bg-red-500 text-white rounded-md"
-            >
-              Usuń wszystkie
-            </button>
-            <button
-              onClick={() => navigate("/start/menu")}
-              className="fixed top-4 right-4 px-4 py-2 bg-blue-500 text-white rounded-md"
-            >
-              Powrót do Menu
-            </button>
-            <button
-              onClick={() => startPayment()}
-              className="px-4 py-2 bg-green-500 text-white rounded-md"
-            >
-              Przejdź do płatności
-            </button>
-          </div>
+            </div>
+          </>
         )}
       </div>
     </div>
