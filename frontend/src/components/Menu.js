@@ -6,7 +6,7 @@ import CategoryList from "./CategoryList";
 import { FaArrowRight } from "react-icons/fa";
 import { TiShoppingCart } from "react-icons/ti";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL
+const backendUrl = "http://localhost:32001";
 
 function Menu() {
   const { state } = useAppContext();

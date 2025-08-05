@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MenuItem from "./MenuItem";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL
+const backendUrl = "http://localhost:32001";
 
 function CategoryList({ type }) {
   const [products, setProducts] = useState([]);

@@ -1,4 +1,105 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-realm-config
+data:
+  realm-export.json: |
+    {
+      "realm": "mcdonalds-app",
+      "enabled": true,
+      "registrationAllowed": false,
+      "loginWithEmailAllowed": true,
+      "duplicateEmailsAllowed": false,
+      "resetPasswordAllowed": false,
+      "editUsernameAllowed": false,
+      "users": [
+        {
+          "username": "administrator",
+          "enabled": true,
+          "firstName": "Admin",
+          "lastName": "McDonalds",
+          "email": "admin@mcdonalds.org",
+          "emailVerified": true,
+          "credentials": [
+            {
+              "type": "password",
+              "value": "mcdonalds",
+              "temporary": false
+            }
+          ],
+          "realmRoles": ["admin"]
+        },
+        {
+          "username": "pracownik1",
+          "enabled": true,
+          "firstName": "Karol",
+          "lastName": "Krawczyk",
+          "email": "worker1@mcdonalds.org",
+          "emailVerified": true,
+          "credentials": [
+            {
+              "type": "password",
+              "value": "mcdonalds",
+              "temporary": false
+            }
+          ],
+          "realmRoles": []
+        },
+        {
+          "username": "pracownik2",
+          "enabled": true,
+          "firstName": "Marek",
+          "lastName": "Mostowiak",
+          "email": "worker2@mcdonalds.org",
+          "emailVerified": true,
+          "credentials": [
+            {
+              "type": "password",
+              "value": "mcdonalds",
+              "temporary": false
+            }
+          ],
+          "realmRoles": []
+        }
+      ],
+      "roles": {
+        "realm": [
+          {
+            "name": "admin",
+            "description": "Admin of McDonald's"
+          }
+        ]
+      },
+      "groups": [],
+      "requiredCredentials": [
+        "password"
+      ],
+      "clients": [
+        {
+          "clientId": "react-client",
+          "enabled": true,
+          "publicClient": true,
+          "standardFlowEnabled": true,
+          "directAccessGrantsEnabled": true,
+          "redirectUris": [
+            "http://localhost:32000/*",
+            "http://localhost:3000/*",
+            "https://www.keycloak.org/app/*",
+            "https://oauth.pstmn.io/v1/callback"
+          ],
+          "webOrigins": [
+            "http://localhost:32000",
+            "http://localhost:3000",
+            "https://www.keycloak.org"
+          ],
+          "protocol": "openid-connect"
+        }
+      ]
+    }
+
+
+---
+apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: keycloak-pv
@@ -50,14 +151,23 @@ spec:
               value: "admin"
           args:
             - start-dev
+            - --import-realm
           volumeMounts:
             - name: keycloak-data
               mountPath: /opt/keycloak/data
+            - name: realm-config
+              mountPath: /opt/keycloak/data/import
+              readOnly: true
       volumes:
         - name: keycloak-data
           persistentVolumeClaim:
             claimName: keycloak-pvc
-
+        - name: realm-config
+          configMap:
+            name: keycloak-realm-config
+            items:
+              - key: realm-export.json
+                path: realm-export.json
 ---
 apiVersion: v1
 kind: Service

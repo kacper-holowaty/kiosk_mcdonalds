@@ -1,7 +1,7 @@
 import React, { createContext, useReducer, useContext, useEffect } from "react";
 import axios from "axios";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL
+const backendUrl = "http://localhost:32001";
 
 const AppContext = createContext();
 

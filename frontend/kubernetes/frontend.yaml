@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: kacperholowaty/frontend_maczek:latest
+          image: kacperholowaty/frontend-maczek:latest
           ports:
             - containerPort: 3000
 

@@ -3,7 +3,7 @@ import { useAppContext } from "../context/AppContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = "http://localhost:32001";
 
 function Basket() {
   const { state, dispatch } = useAppContext();

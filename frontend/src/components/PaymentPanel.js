@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useAppContext } from "../context/AppContext";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL
+const backendUrl = "http://localhost:32001";
 
 function PaymentPanel() {
   const [price, setPrice] = useState(null);
@@ -42,8 +42,10 @@ function PaymentPanel() {
         `${backendUrl}/orders/generate`
       );
 
+      const orderForHistory = basket.map(({ image, ...rest }) => rest);
+
       await axios.post(`${backendUrl}/history/add`, {
-        order: basket,
+        order: orderForHistory,
         takeout,
         totalAmount: price,
         orderNumber: response.data.orderNumber,

@@ -6,7 +6,7 @@ import EditForm from "./EditForm";
 import { Link } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = "http://localhost:32001";
 
 function AdminMenu() {
   const { keycloak } = useKeycloak();

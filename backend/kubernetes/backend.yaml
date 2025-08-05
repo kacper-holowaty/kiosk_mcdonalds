@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: kacperholowaty/backend_maczek:latest
+          image: kacperholowaty/backend-maczek:latest
           resources:
             limits:
               cpu: "200m"

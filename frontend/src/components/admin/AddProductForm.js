@@ -7,7 +7,7 @@ import AdminPanel from "./AdminPanel";
 import { useKeycloak } from "@react-keycloak/web";
 import { useState, useRef } from "react";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
+const backendUrl = "http://localhost:32001";
 
 const toBase64 = (file) =>
   new Promise((resolve, reject) => {

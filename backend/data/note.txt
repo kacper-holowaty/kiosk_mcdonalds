@@ -1,2 +1,0 @@
-MONGO_URI=mongodb://mongodb-service:27017/mcdonalds
-REACT_APP_BACKEND_URL=http://localhost:32001

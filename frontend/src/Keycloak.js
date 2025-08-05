@@ -1,9 +1,7 @@
 import Keycloak from "keycloak-js";
 
-const keycloakUrl = process.env.REACT_APP_KEYCLOAK_URL
-
 const keycloak = new Keycloak({
-  url: `${keycloakUrl}`,
+  url: "http://localhost:32002",
   realm: "mcdonalds-app",
   clientId: "react-client",
 });

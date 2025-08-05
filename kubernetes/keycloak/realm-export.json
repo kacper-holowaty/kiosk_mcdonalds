@@ -1,0 +1,92 @@
+{
+  "realm": "mcdonalds-app",
+  "enabled": true,
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": false,
+  "editUsernameAllowed": false,
+  "users": [
+    {
+      "username": "administrator",
+      "enabled": true,
+      "firstName": "Admin",
+      "lastName": "McDonalds",
+      "email": "admin@mcdonalds.org",
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "mcdonalds",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["admin"]
+    },
+    {
+      "username": "pracownik1",
+      "enabled": true,
+      "firstName": "Karol",
+      "lastName": "Krawczyk",
+      "email": "worker1@mcdonalds.org",
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "mcdonalds",
+          "temporary": false
+        }
+      ],
+      "realmRoles": []
+    },
+    {
+      "username": "pracownik2",
+      "enabled": true,
+      "firstName": "Marek",
+      "lastName": "Mostowiak",
+      "email": "worker2@mcdonalds.org",
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "mcdonalds",
+          "temporary": false
+        }
+      ],
+      "realmRoles": []
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "admin",
+        "description": "Admin of McDonald's"
+      }
+    ]
+  },
+  "groups": [],
+  "requiredCredentials": [
+    "password"
+  ],
+  "clients": [
+    {
+      "clientId": "react-client",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": [
+        "http://localhost:32000/*",
+        "http://localhost:3000/*",
+        "https://www.keycloak.org/app/*",
+        "https://oauth.pstmn.io/v1/callback"
+      ],
+      "webOrigins": [
+        "http://localhost:32000",
+        "http://localhost:3000",
+        "https://www.keycloak.org"
+      ],
+      "protocol": "openid-connect"
+    }
+  ]
+}

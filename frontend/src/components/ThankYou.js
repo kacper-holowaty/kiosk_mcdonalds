@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL
+const backendUrl = "http://localhost:32001";
 
 function ThankYou() {
   const { orderId } = useParams();
